@@ -26,7 +26,7 @@
 
 
 #import "CCScene.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "CCDirector.h"
 
 

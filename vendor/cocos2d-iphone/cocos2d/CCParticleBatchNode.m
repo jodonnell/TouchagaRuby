@@ -34,7 +34,7 @@
 #import "ccConfig.h"
 #import "ccMacros.h"
 #import "CCGrid.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "CCParticleSystem.h"
 #import "CCParticleSystem.h"
 #import "CCShaderCache.h"
@@ -43,7 +43,7 @@
 
 #import "Support/base64.h"
 #import "Support/ZipUtils.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 
 #import "kazmath/GL/matrix.h"
 
@@ -393,7 +393,7 @@
 
 	if( ! [textureAtlas_ resizeCapacity:quantity] ) {
 		// serious problems
-		CCLOGWARN(@"cocos2d: WARNING: Not enough memory to resize the atlas");
+		CCLOG(@"cocos2d: WARNING: Not enough memory to resize the atlas");
 		NSAssert(NO,@"XXX: CCParticleBatchNode #increaseAtlasCapacity SHALL handle this assert");
 	}
 }

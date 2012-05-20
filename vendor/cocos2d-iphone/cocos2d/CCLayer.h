@@ -28,8 +28,12 @@
 
 #import "ccMacros.h"
 
+#ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>									// Needed for UIAccelerometerDelegate
-#import "CCTouchDelegateProtocol.h"		// Touches only supported on iOS
+#import "Platforms/iOS/CCTouchDelegateProtocol.h"		// Touches only supported on iOS
+#elif defined(__CC_PLATFORM_MAC)
+#import "Platforms/Mac/CCEventDispatcher.h"
+#endif
 
 #import "CCProtocols.h"
 #import "CCNode.h"
@@ -43,6 +47,7 @@
  - It can receive iPhone Touches
  - It can receive Accelerometer input
 */
+#ifdef __CC_PLATFORM_IOS
 @interface CCLayer : CCNode <UIAccelerometerDelegate, CCStandardTouchDelegate, CCTargetedTouchDelegate>
 {
 	BOOL isTouchEnabled_;
@@ -80,6 +85,60 @@
  @since v0.8.1
  */
 @property(nonatomic,assign) BOOL isAccelerometerEnabled;
+
+#elif defined(__CC_PLATFORM_MAC)
+
+
+@interface CCLayer : CCNode <CCKeyboardEventDelegate, CCMouseEventDelegate, CCTouchEventDelegate>
+{
+	BOOL	isMouseEnabled_;
+	BOOL	isKeyboardEnabled_;
+	BOOL	isTouchEnabled_;
+}
+
+/** whether or not it will receive mouse events.
+
+ Valind only Mac. Not valid on iOS
+ */
+@property (nonatomic, readwrite) BOOL isMouseEnabled;
+
+/** whether or not it will receive keyboard events.
+
+ Valind only Mac. Not valid on iOS
+ */
+@property (nonatomic, readwrite) BOOL isKeyboardEnabled;
+
+/** whether or not it will receive touch events.
+
+ Valid on iOS and Mac OS X v10.6 and later.
+ */
+@property (nonatomic, readwrite) BOOL isTouchEnabled;
+
+/** priority of the mouse event delegate.
+ Default 0.
+ Override this method to set another priority.
+
+ Valind only Mac. Not valid on iOS
+ */
+-(NSInteger) mouseDelegatePriority;
+
+/** priority of the keyboard event delegate.
+ Default 0.
+ Override this method to set another priority.
+
+ Valind only Mac. Not valid on iOS
+ */
+-(NSInteger) keyboardDelegatePriority;
+
+/** priority of the touch event delegate.
+ Default 0.
+ Override this method to set another priority.
+
+ Valind only Mac. Not valid on iOS
+ */
+-(NSInteger) touchDelegatePriority;
+
+#endif // mac
 
 
 @end

@@ -41,8 +41,8 @@
 #import "CCDrawingPrimitives.h"
 #import "CCConfiguration.h"
 #import "CCTextureCache.h"
-#import "CCFileUtils.h"
-#import "CGPointExtension.h"
+#import "Support/CCFileUtils.h"
+#import "Support/CGPointExtension.h"
 #import "Support/uthash.h"
 
 #pragma mark -

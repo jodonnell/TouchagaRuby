@@ -26,25 +26,22 @@
 
 
 #import "CCLabelTTF.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "ccMacros.h"
 #import "CCShaderCache.h"
 #import "CCGLProgram.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 #import "ccDeprecated.h"
 
-#import "CCDirectorIOS.h"
-
+#ifdef __CC_PLATFORM_IOS
+#import "Platforms/iOS/CCDirectorIOS.h"
+#endif
 
 #if CC_USE_LA88_LABELS
 #define SHADER_PROGRAM kCCShader_PositionTextureColor
 #else
 #define SHADER_PROGRAM kCCShader_PositionTextureA8Color
 #endif
-
-@interface CCLabelTTF ()
--(void) updateTexture;
-@end
 
 @implementation CCLabelTTF
 
@@ -114,7 +111,7 @@
 		// shader program
 		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:SHADER_PROGRAM];
 
-		dimensions_ = dimensions;
+		dimensions_ = CGSizeMake( dimensions.width, dimensions.height );
 		hAlignment_ = alignment;
 		vAlignment_ = vertAlignment;
 		fontName_ = [name retain];
@@ -128,14 +125,60 @@
 
 - (void) setString:(NSString*)str
 {
-	NSAssert( str, @"Invalid string" );
+	[string_ release];
+	string_ = [str copy];
+    
+    NSString* fontName = fontName_;
+    
+#ifdef __CC_PLATFORM_MAC
+    if ([[fontName lowercaseString] hasSuffix:@".ttf"] || YES)
+    {
+        // This is a file, register font with font manager
+        NSString* fontFile = [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:fontName];
+        NSURL* fontURL = [NSURL fileURLWithPath:fontFile];
+        CTFontManagerRegisterFontsForURL((CFURLRef)fontURL, kCTFontManagerScopeProcess, NULL);
+        fontName = [[fontFile lastPathComponent] stringByDeletingPathExtension];
+    }
+#endif
 
-	if( string_.hash != str.hash ) {
-		[string_ release];
-		string_ = [str copy];
-		
-		[self updateTexture];
+	CCTexture2D *tex;
+	if( dimensions_.width == 0 || dimensions_.height == 0 )
+		tex = [[CCTexture2D alloc] initWithString:str
+										 fontName:fontName
+										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
+	else
+		tex = [[CCTexture2D alloc] initWithString:str
+									   dimensions:CC_SIZE_POINTS_TO_PIXELS(dimensions_)
+										hAlignment:hAlignment_
+										vAlignment:vAlignment_
+									lineBreakMode:lineBreakMode_
+										 fontName:fontName
+										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
+
+#ifdef __CC_PLATFORM_IOS
+	// iPad ?
+	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+		if( CC_CONTENT_SCALE_FACTOR() == 2 )
+			[tex setResolutionType:kCCResolutioniPadRetinaDisplay];
+		else
+			[tex setResolutionType:kCCResolutioniPad];
 	}
+	// iPhone ?
+	else
+	{
+		if( CC_CONTENT_SCALE_FACTOR() == 2 )
+			[tex setResolutionType:kCCResolutioniPhoneRetinaDisplay];
+		else
+			[tex setResolutionType:kCCResolutioniPhone];
+	}
+#endif
+
+	[self setTexture:tex];
+	[tex release];
+
+	CGRect rect = CGRectZero;
+	rect.size = [texture_ contentSize];
+	[self setTextureRect: rect];
 }
 
 -(NSString*) string
@@ -145,25 +188,12 @@
 
 - (void)setFontName:(NSString*)fontName
 {
-	if( fontName.hash != fontName_.hash ) {
+	if( fontName != fontName_ ) {
 		[fontName_ release];
-		fontName_ = [fontName copy];
-		
-#ifdef __CC_PLATFORM_MAC
-		if ([[fontName lowercaseString] hasSuffix:@".ttf"] || YES)
-		{
-			// This is a file, register font with font manager
-			NSString* fontFile = [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:fontName];
-			NSURL* fontURL = [NSURL fileURLWithPath:fontFile];
-			CTFontManagerRegisterFontsForURL((CFURLRef)fontURL, kCTFontManagerScopeProcess, NULL);
-			NSString *newFontName = [[fontFile lastPathComponent] stringByDeletingPathExtension];
-
-			fontName_ = [newFontName copy];
-		}
-#endif
+		fontName_ = [fontName retain];
+    
 		// Force update
-		if( string_ )
-			[self updateTexture];
+		[self setString:[self string]];
 	}
 }
 
@@ -178,8 +208,7 @@
 		fontSize_ = fontSize;
 		
 		// Force update
-		if( string_ )
-			[self updateTexture];
+		[self setString:[self string]];
 	}
 }
 
@@ -249,46 +278,5 @@
 	// XXX: string_, fontName_ can't be displayed here, since they might be already released
 
 	return [NSString stringWithFormat:@"<%@ = %p | FontSize = %.1f>", [self class], self, fontSize_];
-}
-
-// Helper
-- (void) updateTexture
-{				
-	CCTexture2D *tex;
-	if( dimensions_.width == 0 || dimensions_.height == 0 )
-		tex = [[CCTexture2D alloc] initWithString:string_
-										 fontName:fontName_
-										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
-	else
-		tex = [[CCTexture2D alloc] initWithString:string_
-									   dimensions:CC_SIZE_POINTS_TO_PIXELS(dimensions_)
-									   hAlignment:hAlignment_
-									   vAlignment:vAlignment_
-									lineBreakMode:lineBreakMode_
-										 fontName:fontName_
-										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
-		
-	// iPad ?
-	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-		if( CC_CONTENT_SCALE_FACTOR() == 2 )
-			[tex setResolutionType:kCCResolutioniPadRetinaDisplay];
-		else
-			[tex setResolutionType:kCCResolutioniPad];
-	}
-	// iPhone ?
-	else
-	{
-		if( CC_CONTENT_SCALE_FACTOR() == 2 )
-			[tex setResolutionType:kCCResolutioniPhoneRetinaDisplay];
-		else
-			[tex setResolutionType:kCCResolutioniPhone];
-	}
-	
-	[self setTexture:tex];
-	[tex release];
-	
-	CGRect rect = CGRectZero;
-	rect.size = [texture_ contentSize];
-	[self setTextureRect: rect];
 }
 @end

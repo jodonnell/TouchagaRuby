@@ -32,7 +32,9 @@
 #import "ccTypes.h"
 #import "ccMacros.h"
 
+#ifdef __CC_PLATFORM_IOS
 #import <CoreGraphics/CGGeometry.h>	// for CGPoint
+#endif
 
 
 #ifdef __cplusplus

@@ -31,6 +31,7 @@
 
 #import <Foundation/Foundation.h> //	for NSObject
 
+#ifdef __CC_PLATFORM_IOS
 
 #define CCRectFromString(__r__)		CGRectFromString(__r__)
 #define CCPointFromString(__p__)	CGPointFromString(__p__)
@@ -38,3 +39,16 @@
 #define CCNSSizeToCGSize
 #define CCNSRectToCGRect
 #define CCNSPointToCGPoint
+
+
+#elif defined(__CC_PLATFORM_MAC)
+
+#define CCRectFromString(__r__)		NSRectToCGRect( NSRectFromString(__r__) )
+#define CCPointFromString(__p__)	NSPointToCGPoint( NSPointFromString(__p__) )
+#define CCSizeFromString(__s__)		NSSizeToCGSize( NSSizeFromString(__s__) )
+#define CCNSSizeToCGSize			NSSizeToCGSize
+#define CCNSRectToCGRect			NSRectToCGRect
+#define CCNSPointToCGPoint			NSPointToCGPoint
+#endif
+
+

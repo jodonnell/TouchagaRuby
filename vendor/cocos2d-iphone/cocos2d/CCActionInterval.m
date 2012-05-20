@@ -32,7 +32,7 @@
 #import "CCSpriteFrame.h"
 #import "CCAnimation.h"
 #import "CCNode.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 
 //
 // IntervalAction

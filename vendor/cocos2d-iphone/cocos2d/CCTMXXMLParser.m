@@ -33,13 +33,13 @@
 #include <zlib.h>
 
 #import "ccMacros.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "CCTMXXMLParser.h"
 #import "CCTMXTiledMap.h"
 #import "CCTMXObjectGroup.h"
 #import "Support/base64.h"
 #import "Support/ZipUtils.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 
 #pragma mark -
 #pragma mark TMXLayerInfo

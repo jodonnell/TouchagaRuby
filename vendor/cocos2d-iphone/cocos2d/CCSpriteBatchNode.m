@@ -37,7 +37,7 @@
 #import "CCGLProgram.h"
 #import "ccGLStateCache.h"
 #import "CCDirector.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "Support/TransformUtils.h"
 #import "Support/CCProfiling.h"
 
@@ -395,7 +395,7 @@ const NSUInteger defaultCapacity = 29;
 
 	if( ! [textureAtlas_ resizeCapacity:quantity] ) {
 		// serious problems
-		CCLOGWARN(@"cocos2d: WARNING: Not enough memory to resize the atlas");
+		CCLOG(@"cocos2d: WARNING: Not enough memory to resize the atlas");
 		NSAssert(NO,@"XXX: CCSpriteBatchNode#increaseAtlasCapacity SHALL handle this assert");
 	}
 }

@@ -26,10 +26,10 @@
 
 
 #import "CCFileUtils.h"
-#import "CCConfiguration.h"
-#import "ccMacros.h"
-#import "ccConfig.h"
-#import "ccTypes.h"
+#import "../CCConfiguration.h"
+#import "../ccMacros.h"
+#import "../ccConfig.h"
+#import "../ccTypes.h"
 
 enum {
 	kCCiPhone,
@@ -103,20 +103,23 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 #pragma mark - CCFileUtils
 
+#ifdef __CC_PLATFORM_IOS
 @interface CCFileUtils()
 -(NSString *) removeSuffix:(NSString*)suffix fromPath:(NSString*)path;
 -(BOOL) fileExistsAtPath:(NSString*)string withSuffix:(NSString*)suffix;
 -(NSInteger) runningDevice;
 @end
+#endif // __CC_PLATFORM_IOS
 
 @implementation CCFileUtils
 
 @synthesize fileManager=fileManager_, bundle=bundle_;
-
+#ifdef __CC_PLATFORM_IOS
 @synthesize iPhoneRetinaDisplaySuffix = iPhoneRetinaDisplaySuffix_;
 @synthesize iPadSuffix = iPadSuffix_;
 @synthesize iPadRetinaDisplaySuffix = iPadRetinaDisplaySuffix_;
 @synthesize enableFallbackSuffixes = enableFallbackSuffixes_;
+#endif // __CC_PLATFORM_IOS
 
 + (id)sharedFileUtils
 {
@@ -138,13 +141,13 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 		
 		bundle_ = [[NSBundle mainBundle] retain];
 
-
+#ifdef __CC_PLATFORM_IOS
 		iPhoneRetinaDisplaySuffix_ = @"-hd";
 		iPadSuffix_ = @"-ipad";
 		iPadRetinaDisplaySuffix_ = @"-ipadhd";
 		
 		enableFallbackSuffixes_ = NO;
-
+#endif // __CC_PLATFORM_IOS
 
 	}
 	
@@ -164,10 +167,11 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 	[fullPathCache_ release];
 	[removeSuffixCache_ release];
 	
-	
+#ifdef __CC_PLATFORM_IOS	
 	[iPhoneRetinaDisplaySuffix_ release];
 	[iPadSuffix_ release];
 	[iPadRetinaDisplaySuffix_ release];
+#endif // __CC_PLATFORM_IOS
 	
     [super dealloc];
 }
@@ -200,7 +204,7 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 			newName = [pathWithoutExtension stringByAppendingString:suffix];
 			newName = [newName stringByAppendingPathExtension:extension];
 		} else
-			CCLOGWARN(@"cocos2d: WARNING Filename(%@) already has the suffix %@. Using it.", name, suffix);
+			CCLOG(@"cocos2d: WARNING Filename(%@) already has the suffix %@. Using it.", name, suffix);
 	}
 
 	NSString *ret = nil;
@@ -237,6 +241,7 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 	// Initialize to non-nil
 	NSString *ret = @"";
 
+#ifdef __CC_PLATFORM_IOS
 
 	NSInteger device = [self runningDevice];
 
@@ -264,9 +269,17 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 		ret = [self getPath:relPath forSuffix:@""];
 		*resolutionType = kCCResolutioniPhone;
 	}
-		
+	
+#elif defined(__CC_PLATFORM_MAC)
+
+	*resolutionType = kCCResolutionMac;
+
+	ret = [self getPath:relPath forSuffix:@""];
+
+#endif // __CC_PLATFORM_MAC
+	
 	if( ! ret ) {
-		CCLOGWARN(@"cocos2d: Warning: File not found: %@", relPath);
+		CCLOG(@"cocos2d: Warning: File not found: %@", relPath);
 		ret = relPath;
 	}
 		
@@ -285,6 +298,7 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 #pragma mark CCFileUtils - Suffix (iOS only)
 
+#ifdef __CC_PLATFORM_IOS
 
 // XXX: Optimization: This should be called only once
 -(NSInteger) runningDevice
@@ -400,6 +414,7 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 	return [self fileExistsAtPath:path withSuffix:iPadRetinaDisplaySuffix_];
 }
 
+#endif // __CC_PLATFORM_IOS
 
 
 @end

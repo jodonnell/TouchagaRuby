@@ -60,24 +60,21 @@
 #define __CCLOGWITHFUNCTION(s, ...) \
 NSLog(@"%s : %@",__FUNCTION__,[NSString stringWithFormat:(s), ##__VA_ARGS__])
 
-#define __CCLOG(s, ...) \
-NSLog(@"%@",[NSString stringWithFormat:(s), ##__VA_ARGS__])
-
 
 #if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0
 #define CCLOG(...) do {} while (0)
-#define CCLOGWARN(...) do {} while (0)
 #define CCLOGINFO(...) do {} while (0)
+#define CCLOGERROR(...) do {} while (0)
 
 #elif COCOS2D_DEBUG == 1
-#define CCLOG(...) __CCLOG(__VA_ARGS__)
-#define CCLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+#define CCLOG(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+#define CCLOGERROR(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
 #define CCLOGINFO(...) do {} while (0)
 
 #elif COCOS2D_DEBUG > 1
-#define CCLOG(...) __CCLOG(__VA_ARGS__)
-#define CCLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
-#define CCLOGINFO(...) __CCLOG(__VA_ARGS__)
+#define CCLOG(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+#define CCLOGERROR(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+#define CCLOGINFO(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
 #endif // COCOS2D_DEBUG
 
 
@@ -135,6 +132,7 @@ default gl blend src function. Compatible with premultiplied alpha images.
  @since v0.99.4
  */
 
+#ifdef __CC_PLATFORM_IOS
 
 #define CC_DIRECTOR_INIT()																		\
 do	{																							\
@@ -162,6 +160,24 @@ do	{																							\
 } while(0)
 
 
+#elif __CC_PLATFORM_MAC
+
+#define CC_DIRECTOR_INIT(__WINSIZE__)															\
+do	{																							\
+	NSRect frameRect = NSMakeRect(0, 0, (__WINSIZE__).width, (__WINSIZE__).height);				\
+	window_ = [[CCWindow alloc] initWithFrame:frameRect fullscreen:NO];						\
+	glView_ = [[CCGLView alloc] initWithFrame:frameRect shareContext:nil];						\
+	[self.window setContentView:self.glView];													\
+	director_ = (CCDirectorMac*) [CCDirector sharedDirector];									\
+	[director_ setDisplayStats:NO];																\
+	[director_ setView:self.glView];															\
+	[director_ setOriginalWinSize:__WINSIZE__];													\
+	[self.window makeMainWindow];																\
+	[self.window makeKeyAndOrderFront:self];													\
+	[self.window center];																		\
+} while(0)
+
+#endif
 
 /** @def CC_NODE_DRAW_SETUP
  Helpful macro that setups the GL server state, the correct GL program and sets the Model View Projection matrix
@@ -170,7 +186,7 @@ do	{																							\
 #define CC_NODE_DRAW_SETUP()																	\
 do {																							\
 	ccGLEnable( glServerState_ );																\
-    NSAssert1(shaderProgram_, @"No shader program set for node: %@", self);						\
+    NSAssert(shaderProgram_, @"No shader program set for node: %@", self);                      \
 	[shaderProgram_ use];																		\
 	[shaderProgram_ setUniformForModelViewProjectionMatrix];									\
 } while(0)

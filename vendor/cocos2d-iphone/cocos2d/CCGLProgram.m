@@ -29,7 +29,7 @@
 #import "CCGLProgram.h"
 #import "ccGLStateCache.h"
 #import "ccMacros.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 #import "Support/uthash.h"
 #import "Support/OpenGL_Internal.h"
 

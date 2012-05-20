@@ -26,7 +26,7 @@
 
 
 #import <Foundation/Foundation.h>
-#import "ccTypes.h"
+#import "../ccTypes.h"
 
 /** Helper class to handle file operations */
 @interface CCFileUtils : NSObject
@@ -37,11 +37,13 @@
 	NSMutableDictionary *removeSuffixCache_;
 	
 	
+#ifdef __CC_PLATFORM_IOS
 	BOOL	enableFallbackSuffixes_;
 	
 	NSString *iPhoneRetinaDisplaySuffix_;
 	NSString *iPadSuffix_;
 	NSString *iPadRetinaDisplaySuffix_;
+#endif // __CC_PLATFORM_IOS
 }
 
 /** NSBundle used by CCFileUtils. By default it uses [NSBundle mainBundle].
@@ -54,6 +56,7 @@
  */
 @property (nonatomic, readwrite, retain) NSFileManager	*fileManager;
 
+#ifdef __CC_PLATFORM_IOS
 /** The iPhone RetinaDisplay suffixes to load resources.
  By default it is "-hd" and "" in that order.
  Only valid on iOS. Not valid for OS X.
@@ -89,6 +92,7 @@
 */
 @property (nonatomic, readwrite) BOOL enableFallbackSuffixes;
 
+ #endif // __CC_PLATFORM_IOS
 
 /** returns the shared file utils instance */
 +(CCFileUtils*) sharedFileUtils;
@@ -131,6 +135,7 @@
  */
 -(NSString*) fullPathFromRelativePath:(NSString*)relPath resolutionType:(ccResolutionType*)resolutionType;
 
+#ifdef __CC_PLATFORM_IOS
 
 /** removes the suffix from a path
  * On iPhone RetinaDisplay it will remove the -hd suffix
@@ -161,6 +166,7 @@
  */
 -(BOOL) iPadRetinaDisplayFileExistsAtPath:(NSString*)filename;
 
+#endif // __CC_PLATFORM_IOS
 
 @end
 

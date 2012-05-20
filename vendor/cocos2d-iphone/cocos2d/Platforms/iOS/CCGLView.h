@@ -63,7 +63,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
-#import "ccMacros.h"
+#import "../../ccMacros.h"
+#ifdef __CC_PLATFORM_IOS
 
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
@@ -156,3 +157,4 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (CGRect) convertRectFromViewToSurface:(CGRect)rect;
 @end
 
+#endif // __CC_PLATFORM_IOS

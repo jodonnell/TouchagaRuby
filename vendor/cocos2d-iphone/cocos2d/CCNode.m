@@ -33,7 +33,7 @@
 #import "CCScheduler.h"
 #import "ccConfig.h"
 #import "ccMacros.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "Support/ccCArray.h"
 #import "Support/TransformUtils.h"
 #import "ccMacros.h"
@@ -42,9 +42,9 @@
 // externals
 #import "kazmath/GL/matrix.h"
 
-
-#import "CCDirectorIOS.h"
-
+#ifdef __CC_PLATFORM_IOS
+#import "Platforms/iOS/CCDirectorIOS.h"
+#endif
 
 
 #if CC_NODE_RENDER_SUBPIXEL
@@ -865,6 +865,7 @@ static NSUInteger globalOrderOfArrival = 1;
 
 // convenience methods which take a UITouch instead of CGPoint
 
+#ifdef __CC_PLATFORM_IOS
 
 - (CGPoint)convertTouchToNodeSpace:(UITouch *)touch
 {
@@ -880,6 +881,7 @@ static NSUInteger globalOrderOfArrival = 1;
 	return [self convertToNodeSpaceAR:point];
 }
 
+#endif // __CC_PLATFORM_IOS
 
 
 @end

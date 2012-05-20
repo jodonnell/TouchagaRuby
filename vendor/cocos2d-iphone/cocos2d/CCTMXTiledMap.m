@@ -34,7 +34,7 @@
 #import "CCTMXObjectGroup.h"
 #import "CCSprite.h"
 #import "CCTextureCache.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 
 
 #pragma mark -

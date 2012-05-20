@@ -56,10 +56,10 @@
 
 // support
 #import "Support/OpenGL_Internal.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "Support/base64.h"
 #import "Support/ZipUtils.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 
 @implementation CCParticleSystem
 @synthesize active, duration;
@@ -72,7 +72,6 @@
 @synthesize emissionRate;
 @synthesize startSize, startSizeVar;
 @synthesize endSize, endSizeVar;
-@synthesize opacityModifyRGB = opacityModifyRGB_;
 @synthesize blendFunc = blendFunc_;
 @synthesize positionType = positionType_;
 @synthesize autoRemoveOnFinish = autoRemoveOnFinish_;
@@ -216,12 +215,8 @@
 		//don't get the internal texture if a batchNode is used
 		if (!batchNode_)
 		{
-			// Set a compatible default for the alpha transfer
-			opacityModifyRGB_ = NO;
-
-			// texture
-			// Try to get the texture from the cache
-
+		// texture
+		// Try to get the texture from the cache
 			NSString *textureName = [dictionary valueForKey:@"textureFileName"];
 
 			CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:textureName];
@@ -245,9 +240,11 @@
 				NSAssert( deflated != NULL, @"CCParticleSystem: error ungzipping textureImageData");
 				NSData *data = [[NSData alloc] initWithBytes:deflated length:deflatedLen];
 
-
+#ifdef __CC_PLATFORM_IOS
 				UIImage *image = [[UIImage alloc] initWithData:data];
-
+#elif defined(__CC_PLATFORM_MAC)
+				NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithData:data];
+#endif
 
 				free(deflated); deflated = NULL;
 
@@ -627,8 +624,6 @@
 -(void) setTexture:(CCTexture2D*) texture
 {
 	texture_ = [texture retain];
-
-	opacityModifyRGB_ = [texture hasPremultipliedAlpha];
 
 	// If the new texture has No premultiplied alpha, AND the blendFunc hasn't been changed, then update it
 	if( texture_ && ! [texture hasPremultipliedAlpha] &&

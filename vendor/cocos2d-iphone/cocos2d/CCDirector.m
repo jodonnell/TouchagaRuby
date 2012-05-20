@@ -51,12 +51,17 @@
 #import "Platforms/CCNS.h"
 
 #import "Support/OpenGL_Internal.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "Support/CCProfiling.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 
-#import "CCDirectorIOS.h"
+#ifdef __CC_PLATFORM_IOS
+#import "Platforms/iOS/CCDirectorIOS.h"
 #define CC_DIRECTOR_DEFAULT CCDirectorDisplayLink
+#elif defined(__CC_PLATFORM_MAC)
+#import "Platforms/Mac/CCDirectorMac.h"
+#define CC_DIRECTOR_DEFAULT CCDirectorDisplayLink
+#endif
 
 
 #pragma mark -
@@ -302,7 +307,9 @@ static CCDirector *_sharedDirector = nil;
 
 	if( view != view_ ) {
 	
+#ifdef __CC_PLATFORM_IOS
 		[super setView:view];
+#endif
 		[view_ release];
 		view_ = [view retain];
 

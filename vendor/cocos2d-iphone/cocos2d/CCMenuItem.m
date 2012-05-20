@@ -29,7 +29,7 @@
 #import "CCLabelAtlas.h"
 #import "CCActionInterval.h"
 #import "CCSprite.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 
 static NSUInteger _fontSize = kCCItemSize;
 static NSString *_fontName = @"Marker Felt";

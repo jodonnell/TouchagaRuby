@@ -31,7 +31,7 @@
 #import "ccMacros.h"
 
 #import "Support/CCVertex.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 
 
 @implementation CCMotionStreak

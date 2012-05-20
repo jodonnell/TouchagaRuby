@@ -67,9 +67,6 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 	Added tests for LabelTTF vertical alignment
 	Added tetts for Scheduler/ActionManager resume/pause all actions
 	Director doesn't raise assert when startAnimation is called twice
-	
-* Krzysztof Zablocki (http://merowing.info):
-	Added support for Depth Stencil in RenderTexture
 
 * Lam Pham (http://www.fancyratstudios.com/)
 	CCProgressTimer: Improved API
@@ -94,9 +91,6 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 
 * mlilback:
 	Added KVO pattern for CCDirector#isPaused
-
-* Nestor Todorov ( https://github.com/supernes ):
-	Particle handle premultiplied + opacity correctly
 
 * Nicky Weber (https://github.com/nickyEnjoysWoogoo):
 	Added ccDrawFilledPoly to DrawingPrimitives

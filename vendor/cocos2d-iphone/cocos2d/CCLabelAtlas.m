@@ -33,9 +33,9 @@
 #import "CCGLProgram.h"
 #import "ccGLStateCache.h"
 #import "CCDirector.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "Support/TransformUtils.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 
 // external
 #import "kazmath/GL/matrix.h"

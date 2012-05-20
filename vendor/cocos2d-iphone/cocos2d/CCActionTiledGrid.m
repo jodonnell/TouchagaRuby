@@ -27,7 +27,7 @@
 #import "CCActionTiledGrid.h"
 #import "CCDirector.h"
 #import "ccMacros.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 
 typedef struct
 {

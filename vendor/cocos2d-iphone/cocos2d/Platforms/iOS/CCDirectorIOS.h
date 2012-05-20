@@ -26,9 +26,10 @@
 
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
-#import "ccMacros.h"
+#import "../../ccMacros.h"
+#ifdef __CC_PLATFORM_IOS
 
-#import "CCDirector.h"
+#import "../../CCDirector.h"
 #import "kazmath/mat4.h"
 
 @class CCTouchDispatcher;
@@ -99,3 +100,5 @@
 
 // optimization. Should only be used to read it. Never to write it.
 extern CGFloat	__ccContentScaleFactor;
+
+#endif // __CC_PLATFORM_IOS

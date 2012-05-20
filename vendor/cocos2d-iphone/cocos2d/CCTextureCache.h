@@ -26,8 +26,9 @@
 
 #import "ccMacros.h"
 
+#ifdef __CC_PLATFORM_IOS
 #import <CoreGraphics/CGImage.h>
-
+#endif
 
 #import <Foundation/Foundation.h>
 

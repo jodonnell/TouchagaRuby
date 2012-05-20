@@ -1,15 +1,22 @@
 Cocomotion
 ==
 
-## Example project for [RubyMotion](http://rubymotion.com) and [Cocos2d](cocos2d-iphone.org)
+Example project for [RubyMotion](http://rubymotion.com) and [Cocos2d](http://cocos2d-iphone.org)
 
-## This is probably not a best practice. 
+The following changes were made:
 
-The first thing I noticed was that the bridge compiler (gen_bridge_metadata) for MacRuby/RubyMotion wouldn't traverse the subfolders for Platform/Support in Cocos2d. My banging-two-rocks together solution for now was to fork Cocos2d 2.0rc1 and move all iOS specific header files to the root lib folder. I also removed iOS-excluding #defines in case that was part of the problem too.
+* Changed cocos2d-iphone 2.0-rc1 project's "Treat Compiler Warnings as Errors" to False
+* Removed Resources/templates/tools folder to get the repo size down
+* Recompiled the bridgesupport file manually:
 
-My fork that's currently vendored is [here](https://github.com/anydiem/cocos2d-iphone/tree/gles20)
+`cd vendor/cocos2d-iphone/cocos2d`
+`gen_bridge_metadata -F complete --no-64-bit -c '-D__CC_PLATFORM_IOS -I. -ISupport -IPlatforms -IPlatforms/iOS' *.h Platforms/*.h Platforms/iOS/*.h Support/*.h > ../cocos2d-iphone.bridgesupport`
 
-Enjoy!
+Known Issues
+==
+
+* inline functions are not yet supported, such as `ccc4()` This is a known bug with RubyMotion and will be fixed in a patch soon
+* definining shouldAutorotateToInterfaceOrientation crashes the app
 
 ## WHO IS RESPONSIBLE FOR THIS ATROCITY?
 
@@ -21,6 +28,5 @@ The fine folks at Cocos2d-iPhone and RubyMotion!
 
 ## Discomfortingly Optimistic To-Do List
 
-* Find a way to not have to move header files to root
 * Create CocoaPod
 

@@ -33,7 +33,7 @@
 #import "CCTMXObjectGroup.h"
 #import "CCTMXXMLParser.h"
 #import "ccMacros.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 
 
 #pragma mark -

@@ -37,7 +37,7 @@
 #import "ccGLStateCache.h"
 #import "CCGLProgram.h"
 #import "CCDirector.h"
-#import "CGPointExtension.h"
+#import "Support/CGPointExtension.h"
 #import "Support/TransformUtils.h"
 #import "Support/CCProfiling.h"
 #import "Support/OpenGL_Internal.h"

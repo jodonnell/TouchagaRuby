@@ -40,10 +40,10 @@
 #import "CCSpriteFrameCache.h"
 #import "CCLabelTTF.h"
 #import "CCTexture2D.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 #import "Platforms/Mac/CCDirectorMac.h"
-#import "CCTouchDispatcher.h"
-#import "CCDirectorIOS.h"
+#import "Platforms/iOS/CCTouchDispatcher.h"
+#import "Platforms/iOS/CCDirectorIOS.h"
 
 
 /*
@@ -56,9 +56,10 @@
 
 // ccTypes.h
 enum {
-
+#ifdef __CC_PLATFORM_IOS
 	kCCResolutionStandard DEPRECATED_ATTRIBUTE	= kCCResolutioniPhone,
 	kCCResolutionRetinaDisplay DEPRECATED_ATTRIBUTE = kCCResolutioniPhoneRetinaDisplay,
+#endif // __CC_PLATFORM_IOS
 	kCCMenuTouchPriority DEPRECATED_ATTRIBUTE	= kCCMenuHandlerPriority,
 };
 
@@ -244,6 +245,7 @@ DEPRECATED_ATTRIBUTE @interface MacView : CCGLView
 // new: -(NSString*) fullPathFromRelativePath:resolutionType  (instance method, not class method)
 +(NSString*) fullPathFromRelativePath:(NSString*)relPath resolutionType:(ccResolutionType*)resolutionType DEPRECATED_ATTRIBUTE;
 
+#ifdef __CC_PLATFORM_IOS
 // new: -(NSString*) removeSuffixFromFile:  (instance method, not class method)
 +(NSString *)removeSuffixFromFile:(NSString*) path DEPRECATED_ATTRIBUTE;
 // new: -(BOOL) iPhoneRetinaDisplayFileExistsAtPath: (instance method, not class method)
@@ -254,6 +256,7 @@ DEPRECATED_ATTRIBUTE @interface MacView : CCGLView
 +(BOOL) iPadRetinaDisplayFileExistsAtPath:(NSString*)filename DEPRECATED_ATTRIBUTE;
 // new: -(void) setiPhoneRetinaDisplaySuffix: (instance method, not class method)
 +(void) setRetinaDisplaySuffix:(NSString*)suffix DEPRECATED_ATTRIBUTE;
+#endif  //__CC_PLATFORM_IOS
 @end
 
 

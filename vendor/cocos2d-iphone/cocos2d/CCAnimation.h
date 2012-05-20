@@ -25,7 +25,9 @@
  */
 
 #import <Foundation/Foundation.h>
+#ifdef __CC_PLATFORM_IOS
 #import <CoreGraphics/CoreGraphics.h>
+#endif // IPHONE
 
 @class CCSpriteFrame;
 @class CCTexture2D;

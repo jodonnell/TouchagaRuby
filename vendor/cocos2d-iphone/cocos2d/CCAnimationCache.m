@@ -32,7 +32,7 @@
 #import "CCSpriteFrameCache.h"
 #import "CCAnimation.h"
 #import "CCSprite.h"
-#import "CCFileUtils.h"
+#import "Support/CCFileUtils.h"
 
 
 @implementation CCAnimationCache
