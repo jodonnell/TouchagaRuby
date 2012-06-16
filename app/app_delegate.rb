@@ -35,7 +35,7 @@ class AppDelegate
 
     CCTexture2D.PVRImagesHavePremultipliedAlpha true
 
-    @director.pushScene first_scene
+    @director.pushScene GameLayer.scene
     true
   end
 

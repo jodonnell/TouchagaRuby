@@ -1,3 +1,29 @@
+version 2.0-rc2 03-Jun-2012
+. [NEW] Added Javascript test using JSCocoa (Mac only)
+			ActionTests, SpriteTests (WIP)
+. [NEW] Director: Added popToRootScene method
+. [NEW] RenderTexture: Added support for Depth Stencil
+. [FIX] Actions: CardinalSpline#copy uses tension (issue #1377)
+			CallFunc: fixed possible crash when releasing the action (issue #1369)
+. [FIX] ccArray: Implementation is no longer inlined. Needed for gen_bridge_metada.
+		Make it compatible with C99
+		Added __cplusplus #ifdef in header
+. [FIX] CocosDenshion: Fixed buffer overrun while resizing buffer (issue #1372)
+. [FIX] Director: Fixed memory leak when createStatsLabel was called more than once (issue #1373)
+. [FIX] FileUtils: easier to override the search folder
+		Added __cplusplus #ifdef in header
+. [FIX] LabelTTF: improved loading time. Label is updated only if the string is set.
+. [FIX] Macros: CCLOG doesn't log the function name. Only CCLOGWARN
+. [FIX] MenuItem: setIsEnabled can be called before setting the images
+. [FIX] Particle: Handles premultipled images correctly
+		Fixed possible memory leak when changing textures.
+		Examples: Removed ARCH_OPTIMAL_PARTICLE_SYSTEM since PointParticle is no longer supported
+. [FIX] SpriteFrameCache: plist is not loaded again if it was already loaded (performance)
+. [FIX] Texture2d: JPEG are loaded correctly on iOS4 (re-re-fixed issue #886)
+		Improved iOS5 allocation bug warning and internal conversions.
+		Fixed alpha when converting RGBA8 textures to RGB5A1
+. [3RD] Chipmunk Physics: Updated to v6.1.1
+
 version 2.0-rc1 19-Apr-2012
 . [NEW] v1.1 Forward-ported changes:
 		CCArray: new sorting methods, replaceObjectAtIndex, isEqualToArray
@@ -17,7 +43,7 @@ version 2.0-rc1 19-Apr-2012
 		On iPad the default suffix is "-ipad". Before it was ""
 . [NEW] LabelAtlas: added .plist config file support. Easier to migrate games to higher resolutions.
 . [NEW] LabelTTF: Added support for vertical alignment
-. [NEW] Tiled: TMX tile rotation is supported
+. [NEW] Tiled: TMX tile rotation is supported (issue #1350)
 . [FIX] All: Fixed compiler warnings. Format strings changed from %08X to %p
 . [FIX] Deprecated: displayedFrame points to displayFrame avoiding infinite loop (issue #1347)
 . [FIX] Director: Fixed projection. ViewPort is the size of the screen. Projection adjusted (issue #1355)
