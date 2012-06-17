@@ -5,36 +5,35 @@ describe "Application 'cocomotion'" do
   end
 
   it "can move the player by touching and dragging" do
-    touch player.sprite.position
-    move_player CGPointMake(100, 100)
-    player.sprite.position.should == CGPointMake(100, 100)
+    touch player.position
+    move_player Point.new(100, 100)
+    player.position.should == Point.new(100, 100)
   end
 
   it "player phases out when finger off screen" do
-    touch player.sprite.position
+    touch player.position
     player_releases_sprite
 
     player.phased_out?.should == true
-    player.sprite.visible.should == false
+    player.visible?.should == false
 
-    warp_out.sprite.visible.should == true
-    warp_out.sprite.position.should == player.sprite.position
+    warp_out.visible?.should == true
+    warp_out.position.should == player.position
   end
 
   it "when phased out player can phase back into circle" do
-    touch player.sprite.position
+    touch player.position
     player_releases_sprite
 
-    position = player.sprite.position
-    position.x += 10
-    position.y += 10
+
+    position = Point.new(player.position.x + 10, player.position.y + 10)
     touch position
 
     player.phased_out?.should == false
-    player.sprite.visible.should == true
-    player.sprite.position.should == position
+    player.visible?.should == true
+    player.position.should == position
 
-    warp_out.sprite.visible.should == false
+    warp_out.visible?.should == false
   end
 
   def player_releases_sprite
@@ -59,7 +58,7 @@ describe "Application 'cocomotion'" do
       x = closer_point position.x, pos.x
       y = closer_point position.y, pos.y
 
-      yield CGPointMake(x, y)
+      yield Point.new(x, y)
     end
   end
 

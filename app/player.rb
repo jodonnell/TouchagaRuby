@@ -4,7 +4,7 @@ class Player
   def initialize
     @sprite = CCSprite.spriteWithFile "player.png"
     size = CCDirector.sharedDirector.winSize
-    @sprite.position = CGPointMake(300, 300)
+    self.position = Point.new(200, 200)
     @phased_out = false
   end
   
@@ -20,6 +20,22 @@ class Player
 
   def phased_out?
     @phased_out
+  end
+
+  def move_to point
+    @sprite.position = point.cg
+  end
+
+  def position
+    Point.new(@sprite.position)
+  end
+
+  def position= position
+    @sprite.position = position.cg
+  end
+
+  def visible?
+    @sprite.visible
   end
 
 end
