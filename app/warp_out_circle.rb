@@ -5,6 +5,7 @@ class WarpOutCircle
     @sprite = CCSprite.spriteWithFile "warpCircle.png"
     @sprite.position = point.cg
     @sprite.visible = false
+    self.energy_percentage = 1
   end
   
   def phase_out
@@ -16,7 +17,7 @@ class WarpOutCircle
   end
 
   def in_phase_in_area? touched_point
-    diameter = @sprite.boundingBox.size.width # * 1000 / 300 # [self convertEnergyToScaleFactor]
+    diameter = @sprite.boundingBox.size.width * energy_percentage # * 1000 / 300 # [self convertEnergyToScaleFactor]
     radius = diameter / 2
     lefCoordOfCircle = position.x - radius
     topCoordOfCircle = position.y - radius
@@ -46,4 +47,14 @@ class WarpOutCircle
   def visible?
     @sprite.visible
   end
+
+  def energy_percentage= energy
+      @energy = energy
+  end
+
+  def energy_percentage
+      @energy
+  end
+
+
 end

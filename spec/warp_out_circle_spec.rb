@@ -21,4 +21,16 @@ describe WarpOutCircle do
     @warp_out.in_phase_in_area?(Point.new(64, 65)).should == false
   end
 
+
+  it "changes the size of the warp in area based on energy" do
+    @warp_out.energy_percentage = 0.5
+    @warp_out.in_phase_in_area?(Point.new(124, 100)).should == true
+    @warp_out.in_phase_in_area?(Point.new(125, 100)).should == false
+
+    @warp_out.energy_percentage = 0.001
+    @warp_out.in_phase_in_area?(Point.new(100, 100)).should == true
+    @warp_out.in_phase_in_area?(Point.new(101, 100)).should == false
+
+  end
+
 end
