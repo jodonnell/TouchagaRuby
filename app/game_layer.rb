@@ -2,6 +2,13 @@ class GameLayer < CCLayer
   attr_accessor :player
   attr_accessor :warp_out
 
+  def self.scene
+    scene = CCScene.node
+    layer = GameLayer.node
+    scene.addChild layer, z:1, tag: 1
+    scene
+  end
+
   def onEnter
     super
     @player = Player.new
@@ -58,12 +65,5 @@ class GameLayer < CCLayer
 
   def move_player position
     @player.position = position
-  end
-
-  def self.scene
-    scene = CCScene.node
-    layer = GameLayer.node
-    scene.addChild layer, z:1, tag: 1
-    scene
   end
 end
