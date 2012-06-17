@@ -31,8 +31,16 @@ class GameLayer < CCLayer
       @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
     else
-      @bullets << Bullet.new(@player.position)
+      bullet = Bullet.new(@player.position)
+      addChild bullet.sprite
+      @bullets << bullet
     end
+
+    @bullets.each do |bullet|
+      bullet.move
+    end
+
+    @bullets.delete_if { |bullet| bullet.off_screen? }
   end
 
   def registerWithTouchDispatcher

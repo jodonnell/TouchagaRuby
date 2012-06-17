@@ -54,6 +54,7 @@ describe "Application 'Touchaga'" do
     next_frame
 
     game_layer.bullets.size.should > 0
+    game_layer.bullets.first.position.should.not == player.position
   end
 
   def player_releases_sprite

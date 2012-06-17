@@ -3,7 +3,6 @@ class Player < Sprite
 
   def initialize
     @sprite = CCSprite.spriteWithFile "player.png"
-    size = CCDirector.sharedDirector.winSize
     self.position = Point.new(200, 200)
     @phased_out = false
   end

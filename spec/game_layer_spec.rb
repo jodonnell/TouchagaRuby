@@ -10,4 +10,16 @@ describe GameLayer do
     @game_layer.update
     @game_layer.warp_out.energy_percentage.should == 0
   end
+
+  it "destroys bullets when they go off screen" do
+    @game_layer.player.phase_in
+    @game_layer.update
+    @game_layer.player.phase_out
+    @game_layer.bullets.size.should == 1
+
+    400.times { @game_layer.update }
+
+    @game_layer.bullets.size.should == 0
+  end
+
 end
