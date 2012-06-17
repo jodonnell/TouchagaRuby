@@ -15,7 +15,7 @@ class GameLayer < CCLayer
 
   def ccTouchBegan(touch, withEvent:event)
     location = convertTouchToNodeSpace(touch)
-    touch_began position
+    touch_began location
   end
 
   def touch_began position
