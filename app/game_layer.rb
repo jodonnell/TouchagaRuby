@@ -40,7 +40,7 @@ class GameLayer < CCLayer
       bullet.move
     end
 
-    @bullets.delete_if { |bullet| bullet.off_screen? }
+    @bullets.keep_if { |bullet| !bullet.off_screen? }
   end
 
   def registerWithTouchDispatcher
