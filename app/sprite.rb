@@ -14,4 +14,8 @@ class Sprite
   def visible?
     @sprite.visible
   end
+
+  def remove
+    @sprite.removeFromParentAndCleanup(true)
+  end
 end

@@ -23,7 +23,6 @@ class GameLayer < CCLayer
 
     self.isTouchEnabled = true
     schedule 'update'
-
   end
 
   def update
@@ -40,6 +39,8 @@ class GameLayer < CCLayer
       bullet.move
     end
 
+    off_screen_bullets = @bullets.select { |bullet| bullet.off_screen? }
+    off_screen_bullets.each {|bullet| bullet.remove}
     @bullets.keep_if { |bullet| !bullet.off_screen? }
   end
 
