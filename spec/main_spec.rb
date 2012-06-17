@@ -48,6 +48,14 @@ describe "Application 'Touchaga'" do
     warp_out.in_phase_in_area?(largest_bound_position).should == false
   end
 
+  it "fires bullets while phased in" do
+    touch player.position
+    
+    next_frame
+
+    game_layer.bullets.size.should > 0
+  end
+
   def player_releases_sprite
     game_layer.touch_ended
   end

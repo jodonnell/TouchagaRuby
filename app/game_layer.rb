@@ -1,6 +1,7 @@
 class GameLayer < CCLayer 
   attr_accessor :player
   attr_accessor :warp_out
+  attr_reader :bullets
 
   def self.scene
     scene = CCScene.node
@@ -18,6 +19,8 @@ class GameLayer < CCLayer
     @warp_out = WarpOutCircle.new @player.position
     addChild @warp_out.sprite
 
+    @bullets = []
+
     self.isTouchEnabled = true
     schedule 'update'
 
@@ -27,6 +30,8 @@ class GameLayer < CCLayer
     if @player.phased_out?
       @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
+    else
+      @bullets << Bullet.new(@player.position)
     end
   end
 
