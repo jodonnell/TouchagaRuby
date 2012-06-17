@@ -25,7 +25,7 @@ class GameLayer < CCLayer
 
   def update
     if @player.phased_out?
-      @warp_out.energy_percentage -= 0.02
+      @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
     end
   end

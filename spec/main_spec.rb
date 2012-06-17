@@ -43,7 +43,7 @@ describe "Application 'Touchaga'" do
     largest_bound_position = Point.new(player.position.x + 120, player.position.y)
     warp_out.in_phase_in_area?(largest_bound_position).should == true
 
-    10.times { next_frame }
+    100.times { next_frame }
 
     warp_out.in_phase_in_area?(largest_bound_position).should == false
   end
