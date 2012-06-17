@@ -1,4 +1,4 @@
-class WarpOutCircle
+class WarpOutCircle < Sprite
   attr_accessor :sprite
 
   def initialize point
@@ -34,18 +34,6 @@ class WarpOutCircle
     else
       false
     end
-  end
-
-  def position
-    Point.new(@sprite.position)
-  end
-
-  def position= position
-    @sprite.position = position.cg
-  end
-
-  def visible?
-    @sprite.visible
   end
 
   def energy_percentage= energy
