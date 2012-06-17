@@ -1,6 +1,7 @@
 describe "Application 'cocomotion'" do
   before do
-    @app = UIApplication.sharedApplication
+    CCDirector.sharedDirector.replaceScene GameLayer.scene
+    CCDirector.sharedDirector.drawScene
   end
 
   it "can move the player by touching and dragging" do
@@ -15,6 +16,9 @@ describe "Application 'cocomotion'" do
 
     player.phased_out?.should == true
     player.sprite.visible.should == false
+
+    warp_out.sprite.visible.should == true
+    warp_out.sprite.position.should == player.sprite.position
   end
 
   it "when phased out player can phase back into circle" do
@@ -29,6 +33,8 @@ describe "Application 'cocomotion'" do
     player.phased_out?.should == false
     player.sprite.visible.should == true
     player.sprite.position.should == position
+
+    warp_out.sprite.visible.should == false
   end
 
   def player_releases_sprite
@@ -77,6 +83,10 @@ describe "Application 'cocomotion'" do
 
   def player
     game_layer.player
+  end
+
+  def warp_out
+    game_layer.warp_out
   end
 
   def game_layer

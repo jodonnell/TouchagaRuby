@@ -1,10 +1,14 @@
 class GameLayer < CCLayer 
   attr_accessor :player
+  attr_accessor :warp_out
 
   def onEnter
     super
     @player = Player.new
     addChild @player.sprite
+
+    @warp_out = WarpOutCircle.new
+    addChild @warp_out.sprite
 
     self.isTouchEnabled = true
   end
@@ -20,8 +24,9 @@ class GameLayer < CCLayer
 
   def touch_began position
     if @player.phased_out?
-      phase_in = @player.in_phase_in_area?(position)
+      phase_in = @warp_out.in_phase_in_area?(position)
       if phase_in
+        @warp_out.phase_in
         @player.phase_in
         move_player position
       end
@@ -45,7 +50,10 @@ class GameLayer < CCLayer
   end
 
   def touch_ended
+    players_pos = @player.sprite.position
+    @warp_out.sprite.position = players_pos
     @player.phase_out
+    @warp_out.phase_out
   end
 
   def move_player position
