@@ -14,7 +14,11 @@ describe WarpOutCircle do
   end
 
   it "can tell if a point is within the phase in area" do
-    @warp_out.in_phase_in_area?(Point.new(110, 110)).should == true
+    @warp_out.in_phase_in_area?(Point.new(149, 100)).should == true
+    @warp_out.in_phase_in_area?(Point.new(150, 100)).should == false
+
+    @warp_out.in_phase_in_area?(Point.new(65, 65)).should == true
+    @warp_out.in_phase_in_area?(Point.new(64, 65)).should == false
   end
 
 end
