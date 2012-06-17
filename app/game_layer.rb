@@ -5,6 +5,7 @@ class GameLayer < CCLayer
   def self.scene
     scene = CCScene.node
     layer = GameLayer.node
+
     scene.addChild layer, z:1, tag: 1
     scene
   end
@@ -18,6 +19,15 @@ class GameLayer < CCLayer
     addChild @warp_out.sprite
 
     self.isTouchEnabled = true
+    schedule 'update'
+
+  end
+
+  def update
+    if @player.phased_out?
+      @warp_out.energy_percentage -= 0.02
+      @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
+    end
   end
 
   def registerWithTouchDispatcher

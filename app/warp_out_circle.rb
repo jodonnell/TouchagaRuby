@@ -17,7 +17,7 @@ class WarpOutCircle
   end
 
   def in_phase_in_area? touched_point
-    diameter = @sprite.boundingBox.size.width * energy_percentage # * 1000 / 300 # [self convertEnergyToScaleFactor]
+    diameter = @sprite.boundingBox.size.width # * 1000 / 300 # [self convertEnergyToScaleFactor]
     radius = diameter / 2
     lefCoordOfCircle = position.x - radius
     topCoordOfCircle = position.y - radius
@@ -49,7 +49,8 @@ class WarpOutCircle
   end
 
   def energy_percentage= energy
-      @energy = energy
+    @energy = energy
+    @sprite.scale = @energy
   end
 
   def energy_percentage

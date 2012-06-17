@@ -1,4 +1,4 @@
-describe "Application 'cocomotion'" do
+describe "Application 'Touchaga'" do
   before do
     CCDirector.sharedDirector.replaceScene GameLayer.scene
     CCDirector.sharedDirector.drawScene
@@ -36,6 +36,18 @@ describe "Application 'cocomotion'" do
     warp_out.visible?.should == false
   end
 
+  it "when phased out circle shrinks" do
+    touch player.position
+    player_releases_sprite
+
+    largest_bound_position = Point.new(player.position.x + 120, player.position.y)
+    warp_out.in_phase_in_area?(largest_bound_position).should == true
+
+    10.times { next_frame }
+
+    warp_out.in_phase_in_area?(largest_bound_position).should == false
+  end
+
   def player_releases_sprite
     game_layer.touch_ended
   end
@@ -70,6 +82,10 @@ describe "Application 'cocomotion'" do
     else
       start + 1
     end
+  end
+
+  def next_frame
+    game_layer.update
   end
 
   def find_slope_between_points
