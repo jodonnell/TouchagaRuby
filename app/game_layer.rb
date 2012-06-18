@@ -13,13 +13,22 @@ class GameLayer < CCLayer
 
   def onEnter
     super
+    @frame_tick = 0
+
     @player = Player.new
     addChild @player.sprite
 
     @warp_out = WarpOutCircle.new @player.position
     addChild @warp_out.sprite
 
-    @bullets = []
+    @bulletsBatch = CCSpriteBatchNode.batchNodeWithFile("bullet.png")
+    addChild(@bulletsBatch)
+
+    @bullets = 25.times.collect do 
+      bullet = Bullet.new
+      @bulletsBatch.addChild bullet.sprite
+      bullet
+    end
 
     self.isTouchEnabled = true
     schedule 'update'
@@ -30,18 +39,25 @@ class GameLayer < CCLayer
       @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
     else
-      bullet = Bullet.new(@player.position)
-      addChild bullet.sprite
-      @bullets << bullet
+      if @frame_tick % 5 == 0
+        inactive_bullets = @bullets.select {|bullet| bullet.visible? == false}
+        inactive_bullet = inactive_bullets.first
+        inactive_bullet.move_to @player.position
+        inactive_bullet.sprite.visible = true
+      end
     end
 
     @bullets.each do |bullet|
-      bullet.move
+      bullet.move if bullet.visible? 
     end
 
-    off_screen_bullets = @bullets.select { |bullet| bullet.off_screen? }
-    off_screen_bullets.each {|bullet| bullet.remove}
-    @bullets.keep_if { |bullet| !bullet.off_screen? }
+    @bullets.each do |bullet| 
+      bullet.sprite.visible = false if bullet.off_screen?
+    end
+
+    @frame_tick += 1
+
+    @frame_tick = 0 if @frame_tick == 1000
   end
 
   def registerWithTouchDispatcher

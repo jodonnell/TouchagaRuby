@@ -1,9 +1,10 @@
 class Bullet < Sprite
   attr_accessor :sprite
 
-  def initialize point
+  def initialize
     @sprite = CCSprite.spriteWithFile "bullet.png"
-    self.position = point
+    self.position = Point.new(1, 1)
+    @sprite.visible = false
   end
 
   def move

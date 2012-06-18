@@ -15,11 +15,15 @@ describe GameLayer do
     @game_layer.player.phase_in
     @game_layer.update
     @game_layer.player.phase_out
-    @game_layer.bullets.size.should == 1
+    active_bullets.size.should == 1
 
     400.times { @game_layer.update }
 
-    @game_layer.bullets.size.should == 0
+    active_bullets.size.should == 0
+  end
+
+  def active_bullets
+    @game_layer.bullets.select {|bullet| bullet.visible?}
   end
 
 end

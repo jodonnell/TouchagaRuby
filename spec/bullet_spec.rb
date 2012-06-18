@@ -1,6 +1,7 @@
 describe Bullet do
   before do
-    @bullet = Bullet.new(Point.new(100, 100))
+    @bullet = Bullet.new
+    @bullet.move_to Point.new(100, 100)
   end
 
   it "has a position" do
@@ -14,7 +15,7 @@ describe Bullet do
 
   it "can tell when it is off screen" do
     height = CCDirector.sharedDirector.winSize.height
-    bullet = Bullet.new(Point.new(100, height + 20))
-    bullet.off_screen?.should == true
+    @bullet.move_to(Point.new(100, height + 20))
+    @bullet.off_screen?.should == true
   end
 end
