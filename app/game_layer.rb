@@ -2,6 +2,7 @@ class GameLayer < CCLayer
   attr_accessor :player
   attr_accessor :warp_out
   attr_reader :bullets
+  attr_reader :enemies
 
   def self.scene
     scene = CCScene.node
@@ -22,6 +23,8 @@ class GameLayer < CCLayer
     addChild @warp_out.sprite
 
     create_bullets
+
+    @enemies = []
 
     self.isTouchEnabled = true
     schedule 'update'
@@ -49,6 +52,8 @@ class GameLayer < CCLayer
     move_bullets
     remove_offscreen_bullets
 
+    move_enemies
+
     @frame_tick += 1
     @frame_tick = 0 if @frame_tick == 1000
   end
@@ -62,6 +67,17 @@ class GameLayer < CCLayer
 
   def move_bullets
     @bullets.each { |bullet| bullet.move if bullet.visible? }
+  end
+
+  def move_enemies
+    @enemies.each { |enemy| enemy.move }
+  end
+
+  def create_enemy point
+    enemy = Enemy.new
+    enemy.move_to point
+    addChild enemy.sprite
+    @enemies << enemy
   end
 
   def remove_offscreen_bullets

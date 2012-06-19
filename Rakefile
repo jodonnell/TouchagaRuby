@@ -11,7 +11,6 @@ Motion::Project::App.setup do |app|
   app.frameworks += ["OpenGLES", "OpenAL", "AVFoundation", "AudioToolbox", "QuartzCore"]
   app.libs << "/usr/lib/libz.dylib"
 
-  app.files_dependencies 'app/bullet.rb' => 'app/sprite.rb', 'app/player.rb' => 'app/sprite.rb', 'app/warp_out_circle.rb' => 'app/sprite.rb'
-  
+  app.files_dependencies 'app/bullet.rb' => 'app/sprite.rb', 'app/player.rb' => 'app/sprite.rb', 'app/warp_out_circle.rb' => 'app/sprite.rb', 'app/enemy.rb' => 'app/sprite.rb'
   
 end
