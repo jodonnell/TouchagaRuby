@@ -21,17 +21,21 @@ class GameLayer < CCLayer
     @warp_out = WarpOutCircle.new @player.position
     addChild @warp_out.sprite
 
-    @bulletsBatch = CCSpriteBatchNode.batchNodeWithFile("bullet.png")
-    addChild(@bulletsBatch)
-
-    @bullets = 100.times.collect do 
-      bullet = Bullet.new @bulletsBatch
-      @bulletsBatch.addChild bullet.sprite
-      bullet
-    end
+    create_bullets
 
     self.isTouchEnabled = true
     schedule 'update'
+  end
+
+  def create_bullets
+    @bullets_batch = CCSpriteBatchNode.batchNodeWithFile("bullet.png")
+    addChild(@bullets_batch)
+
+    @bullets = 100.times.collect do 
+      bullet = Bullet.new @bullets_batch
+      @bullets_batch.addChild bullet.sprite
+      bullet
+    end
   end
 
   def update
@@ -43,11 +47,9 @@ class GameLayer < CCLayer
     end
 
     move_bullets
-    
     remove_offscreen_bullets
 
     @frame_tick += 1
-
     @frame_tick = 0 if @frame_tick == 1000
   end
 
