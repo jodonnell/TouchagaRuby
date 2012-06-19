@@ -39,25 +39,33 @@ class GameLayer < CCLayer
       @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
     else
-      inactive_bullets = @bullets.select {|bullet| bullet.visible? == false}
-      inactive_bullet = inactive_bullets.first
-      inactive_bullet.move_to @player.position
-      inactive_bullet.sprite.visible = true
+      fire_bullet
     end
 
-    if @frame_tick % 2 == 0
-      @bullets.each do |bullet|
-        bullet.move if bullet.visible? 
-      end
-    end
-
-    @bullets.each do |bullet| 
-      bullet.sprite.visible = false if bullet.off_screen?
-    end
+    move_bullets
+    
+    remove_offscreen_bullets
 
     @frame_tick += 1
 
     @frame_tick = 0 if @frame_tick == 1000
+  end
+
+  def fire_bullet
+    inactive_bullets = @bullets.select {|bullet| bullet.visible? == false}
+    inactive_bullet = inactive_bullets.first
+    inactive_bullet.move_to @player.position
+    inactive_bullet.sprite.visible = true
+  end
+
+  def move_bullets
+    @bullets.each { |bullet| bullet.move if bullet.visible? }
+  end
+
+  def remove_offscreen_bullets
+    @bullets.each do |bullet| 
+      bullet.sprite.visible = false if bullet.off_screen?
+    end
   end
 
   def registerWithTouchDispatcher
