@@ -97,14 +97,6 @@ describe "Application 'Touchaga'" do
     game_layer.update
   end
 
-  def find_slope_between_points
-    
-  end
-
-  def remove_touch
-    
-  end
-
   def player
     game_layer.player
   end
