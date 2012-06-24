@@ -71,14 +71,33 @@ class GameLayer < CCLayer
 
     @player.dead = true if player_collides?
 
+    @enemies = [] if check_for_enemies_destroyed
+
+    CCDirector.sharedDirector.pause if @player.dead?
+    
     @frame_tick += 1
     @frame_tick = 0 if @frame_tick == 1000
+  end
+
+  def check_for_enemies_destroyed
+    return false if @enemies.size == 0
+    any_collisions = false
+    @bullets.each do |bullet| 
+      next if bullet.visible? == false
+      any_collisions = true if CGRectIntersectsRect(@enemies.first.sprite.boundingBox, bullet.sprite.boundingBox)
+    end
+    any_collisions
   end
 
   def player_collides?
     any_collisions = false
     @enemies.each do |enemy| 
-      any_collisions = true if CGRectContainsPoint(@player.sprite.boundingBox, enemy.position.cg)
+      any_collisions = true if CGRectIntersectsRect(@player.sprite.boundingBox, enemy.sprite.boundingBox)
+    end
+
+    @enemy_bullets.each do |enemy_bullet|
+      next if enemy_bullet.visible? == false
+      any_collisions = true if CGRectIntersectsRect(@player.sprite.boundingBox, enemy_bullet.sprite.boundingBox)
     end
     any_collisions
   end

@@ -5,7 +5,7 @@
 *** TODO [#A] can be destroyed by player
 **** particle effects
 *** DONE can shoot bullets
-*** TODO [#A] loaded by an atlas texture
+*** DONE loaded by an atlas texture
 *** TODO [#A] can move along a path
 *** TODO [#A] bullets can destroy player
 
