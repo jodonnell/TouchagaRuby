@@ -1,6 +1,7 @@
 describe EnemyBullet do
-  it "has a position" do
-    @enemy_bullet = EnemyBullet.new Point.new(100, 100)
-    @enemy_bullet.position.should == Point.new(100, 100)
+  it "can be offscreen" do
+    @enemy_bullet = EnemyBullet.new
+    @enemy_bullet.move_to Point.new(20, -20)
+    @enemy_bullet.off_screen?.should == true
   end
 end

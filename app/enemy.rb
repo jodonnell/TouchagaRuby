@@ -15,8 +15,4 @@ class Enemy < Sprite
 
     self.position = Point.new(x, y)
   end
-
-  def shoot
-    EnemyBullet.new position
-  end
 end

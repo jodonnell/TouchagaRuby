@@ -13,8 +13,4 @@ describe Enemy do
     @enemy.move
     @enemy.position.should.not == Point.new(100, 100)
   end
-
-  it "can shoot bullets" do
-    @enemy.shoot.class.should == EnemyBullet
-  end
 end

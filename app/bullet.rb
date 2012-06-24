@@ -1,9 +1,8 @@
 class Bullet < Sprite
   attr_accessor :sprite
 
-  def initialize batch = nil
-    @sprite = CCSprite.spriteWithTexture(batch.texture) if batch
-    @sprite = CCSprite.spriteWithFile "bullet.png" unless batch
+  def initialize
+    @sprite = CCSprite.spriteWithSpriteFrameName "bullet.png"
 
     self.position = Point.new(1, 1)
     @sprite.visible = false

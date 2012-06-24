@@ -21,7 +21,8 @@ describe "Enemy" do
   it "can shoot bullets" do
     SpecHelper.game_layer.create_enemy Point.new(100, 100)
     SpecHelper.next_frame
-    SpecHelper.game_layer.enemy_bullets.size.should == 1
+    SpecHelper.game_layer.enemy_bullets.first.position.y.should >= 89
+    SpecHelper.game_layer.enemy_bullets.first.position.y.should <= 91
   end
 
 end

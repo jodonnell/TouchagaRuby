@@ -1,11 +1,11 @@
 class EnemyBullet < Sprite
   attr_accessor :sprite
 
-  def initialize point, batch = nil
-    @sprite = CCSprite.spriteWithTexture(batch.texture) if batch
-    @sprite = CCSprite.spriteWithFile "bullet.png" unless batch
+  def initialize
+    @sprite = CCSprite.spriteWithSpriteFrameName "enemy_bullet.png"
 
-    self.position = point
+    self.position = Point.new(1, 1)
+    @sprite.visible = false
   end
 
   def move

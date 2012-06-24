@@ -26,18 +26,27 @@ class GameLayer < CCLayer
     create_bullets
 
     @enemies = []
-    #create_enemy Point.new(100, 100)
-    @enemy_bullets = []
+    create_enemy Point.new(100, 100)
+
     self.isTouchEnabled = true
     schedule 'update'
   end
 
   def create_bullets
-    @bullets_batch = CCSpriteBatchNode.batchNodeWithFile("bullet.png")
+    CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("bullets.plist")
+
+    @bullets_batch = CCSpriteBatchNode.batchNodeWithFile("bullets.png")
     addChild(@bullets_batch)
 
+
     @bullets = 100.times.collect do 
-      bullet = Bullet.new @bullets_batch
+      bullet = Bullet.new
+      @bullets_batch.addChild bullet.sprite
+      bullet
+    end
+
+    @enemy_bullets = 100.times.collect do 
+      bullet = EnemyBullet.new
       @bullets_batch.addChild bullet.sprite
       bullet
     end
@@ -48,14 +57,15 @@ class GameLayer < CCLayer
       @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
     else
-      fire_bullet
+      fire_bullet @bullets, @player.position if @frame_tick % 3 == 0
     end
 
     move_bullets @bullets
     remove_offscreen_bullets @bullets
 
     move_enemies
-    enemies_shoot
+
+    enemies_shoot if @frame_tick % 3 == 0
     move_bullets @enemy_bullets
     remove_offscreen_bullets @enemy_bullets
 
@@ -73,10 +83,11 @@ class GameLayer < CCLayer
     any_collisions
   end
 
-  def fire_bullet
-    inactive_bullets = @bullets.select {|bullet| bullet.visible? == false}
+  def fire_bullet bullets, position
+    inactive_bullets = bullets.select {|bullet| bullet.visible? == false}
     inactive_bullet = inactive_bullets.first
-    inactive_bullet.move_to @player.position
+    raise "No inactive bullets" if inactive_bullet.nil?
+    inactive_bullet.move_to position
     inactive_bullet.sprite.visible = true
   end
 
@@ -89,8 +100,7 @@ class GameLayer < CCLayer
   end
 
   def enemies_shoot
-    enemy_bullets = @enemies.collect { |enemy| enemy.shoot }
-    enemy_bullets.each { |enemy_bullet| addChild enemy_bullet.sprite; @enemy_bullets << enemy_bullet }
+    @enemies.each { |enemy| fire_bullet @enemy_bullets, enemy.position }
   end
 
   def create_enemy point
