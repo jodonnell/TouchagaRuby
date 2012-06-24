@@ -9,21 +9,27 @@ class SpecHelper
   end
 
   def self.warp_out
-    SpecHelper.game_layer.warp_out
+    game_layer.warp_out
   end
 
   def self.player
-    SpecHelper.game_layer.player
+    game_layer.player
+  end
+
+  def self.move_player move_to
+    drag_to(move_to) do |pos|
+      game_layer.touch_moved(pos)
+    end
   end
 
   def self.touch pos
     @beginTouch = pos
-    SpecHelper.game_layer.touch_began pos
+    game_layer.touch_began pos
   end
 
   def self.drag_to pos
-    while pos != SpecHelper.player.sprite.position
-      position = SpecHelper.player.sprite.position
+    while pos != player.sprite.position
+      position = player.sprite.position
 
       x = closer_point position.x, pos.x
       y = closer_point position.y, pos.y

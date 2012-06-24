@@ -5,6 +5,7 @@ class Player < Sprite
     @sprite = CCSprite.spriteWithFile "player.png"
     self.position = Point.new(200, 200)
     @phased_out = false
+    @dead = false
   end
   
   def phase_out
@@ -19,5 +20,13 @@ class Player < Sprite
 
   def phased_out?
     @phased_out
+  end
+
+  def dead?
+    @dead
+  end
+
+  def dead= dead
+    @dead = dead
   end
 end

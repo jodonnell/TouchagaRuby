@@ -1,5 +1,5 @@
 * Touchaga
 ** Enemy
-*** can move
+*** DONE can move
 *** can crash into player
 *** can be destroyed by player

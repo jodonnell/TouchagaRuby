@@ -7,6 +7,16 @@ class Enemy < Sprite
   end
 
   def move
-    self.position = Point.new(self.position.x + rand(3) - 1, self.position.y + rand(3) - 1)
+    rand_x = rand(3) - 1
+    rand_y = rand(3) - 1
+    rand_y = 1 if rand_y == 0 and rand_x == 0
+    x = self.position.x + rand_x
+    y = self.position.y + rand_y
+
+    self.position = Point.new(x, y)
+  end
+
+  def shoot
+    EnemyBullet.new position
   end
 end

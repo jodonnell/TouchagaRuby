@@ -3,6 +3,7 @@ class GameLayer < CCLayer
   attr_accessor :warp_out
   attr_reader :bullets
   attr_reader :enemies
+  attr_reader :enemy_bullets
 
   def self.scene
     scene = CCScene.node
@@ -25,7 +26,8 @@ class GameLayer < CCLayer
     create_bullets
 
     @enemies = []
-
+    #create_enemy Point.new(100, 100)
+    @enemy_bullets = []
     self.isTouchEnabled = true
     schedule 'update'
   end
@@ -49,13 +51,26 @@ class GameLayer < CCLayer
       fire_bullet
     end
 
-    move_bullets
-    remove_offscreen_bullets
+    move_bullets @bullets
+    remove_offscreen_bullets @bullets
 
     move_enemies
+    enemies_shoot
+    move_bullets @enemy_bullets
+    remove_offscreen_bullets @enemy_bullets
+
+    @player.dead = true if player_collides?
 
     @frame_tick += 1
     @frame_tick = 0 if @frame_tick == 1000
+  end
+
+  def player_collides?
+    any_collisions = false
+    @enemies.each do |enemy| 
+      any_collisions = true if CGRectContainsPoint(@player.sprite.boundingBox, enemy.position.cg)
+    end
+    any_collisions
   end
 
   def fire_bullet
@@ -65,12 +80,17 @@ class GameLayer < CCLayer
     inactive_bullet.sprite.visible = true
   end
 
-  def move_bullets
-    @bullets.each { |bullet| bullet.move if bullet.visible? }
+  def move_bullets bullets
+    bullets.each { |bullet| bullet.move if bullet.visible? }
   end
 
   def move_enemies
     @enemies.each { |enemy| enemy.move }
+  end
+
+  def enemies_shoot
+    enemy_bullets = @enemies.collect { |enemy| enemy.shoot }
+    enemy_bullets.each { |enemy_bullet| addChild enemy_bullet.sprite; @enemy_bullets << enemy_bullet }
   end
 
   def create_enemy point
@@ -80,8 +100,8 @@ class GameLayer < CCLayer
     @enemies << enemy
   end
 
-  def remove_offscreen_bullets
-    @bullets.each do |bullet| 
+  def remove_offscreen_bullets bullets
+    bullets.each do |bullet| 
       bullet.sprite.visible = false if bullet.off_screen?
     end
   end

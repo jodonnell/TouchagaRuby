@@ -6,7 +6,7 @@ describe "Application 'Touchaga'" do
 
   it "can move the player by touching and dragging" do
     SpecHelper.touch SpecHelper.player.position
-    move_player Point.new(100, 100)
+    SpecHelper.move_player Point.new(100, 100)
     SpecHelper.player.position.should == Point.new(100, 100)
   end
 
@@ -59,11 +59,5 @@ describe "Application 'Touchaga'" do
 
   def player_releases_sprite
     SpecHelper.game_layer.touch_ended
-  end
-
-  def move_player move_to
-    SpecHelper.drag_to(move_to) do |pos|
-      SpecHelper.game_layer.touch_moved(pos)
-    end
   end
 end

@@ -22,6 +22,11 @@ describe GameLayer do
     active_bullets.size.should == 0
   end
 
+  it "can collide with enemies" do
+    @game_layer.create_enemy @game_layer.player.position
+    @game_layer.player_collides?.should == true
+  end
+
   def active_bullets
     @game_layer.bullets.select {|bullet| bullet.visible?}
   end
