@@ -1,5 +1,19 @@
 * Touchaga
 ** Enemy
 *** DONE can move
-*** can crash into player
-*** can be destroyed by player
+*** DONE can crash into player
+*** TODO [#A] can be destroyed by player
+**** particle effects
+*** DONE can shoot bullets
+*** TODO [#A] loaded by an atlas texture
+*** TODO [#A] can move along a path
+*** TODO [#A] bullets can destroy player
+
+** General
+*** can restart
+*** load levels
+**** load testing level
+** Player
+*** TODO [#A] can die
+**** particle effects
+*** can shoot multiple bullet types
