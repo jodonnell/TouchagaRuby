@@ -2,7 +2,7 @@ class Enemy < Sprite
   attr_accessor :sprite
 
   def initialize
-    @sprite = CCSprite.spriteWithFile "enemy.png"
+    @sprite = CCSprite.spriteWithSpriteFrameName "enemy.png"
     self.position = Point.new(200, 200)
   end
 

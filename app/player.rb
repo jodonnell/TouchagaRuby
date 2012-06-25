@@ -2,7 +2,7 @@ class Player < Sprite
   attr_accessor :sprite
 
   def initialize
-    @sprite = CCSprite.spriteWithFile "player.png"
+    @sprite = CCSprite.spriteWithSpriteFrameName "player.png"
     self.position = Point.new(200, 200)
     @phased_out = false
     @dead = false

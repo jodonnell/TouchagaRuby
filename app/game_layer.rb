@@ -17,11 +17,17 @@ class GameLayer < CCLayer
     super
     @frame_tick = 0
 
+    CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("sprites.plist")
+
+    @bullets_batch = CCSpriteBatchNode.batchNodeWithFile("sprites.png")
+    addChild(@bullets_batch)
+
+
     @player = Player.new
-    addChild @player.sprite
+    @bullets_batch.addChild @player.sprite
 
     @warp_out = WarpOutCircle.new @player.position
-    addChild @warp_out.sprite
+    @bullets_batch.addChild @warp_out.sprite
 
     create_bullets
 
@@ -33,12 +39,6 @@ class GameLayer < CCLayer
   end
 
   def create_bullets
-    CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("bullets.plist")
-
-    @bullets_batch = CCSpriteBatchNode.batchNodeWithFile("bullets.png")
-    addChild(@bullets_batch)
-
-
     @bullets = 100.times.collect do 
       bullet = Bullet.new
       @bullets_batch.addChild bullet.sprite
@@ -125,7 +125,7 @@ class GameLayer < CCLayer
   def create_enemy point
     enemy = Enemy.new
     enemy.move_to point
-    addChild enemy.sprite
+    @bullets_batch.addChild enemy.sprite
     @enemies << enemy
   end
 

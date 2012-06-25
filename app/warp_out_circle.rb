@@ -2,7 +2,7 @@ class WarpOutCircle < Sprite
   attr_accessor :sprite
 
   def initialize point
-    @sprite = CCSprite.spriteWithFile "warpCircle.png"
+    @sprite = CCSprite.spriteWithSpriteFrameName "warpCircle.png"
     @sprite.position = point.cg
     @sprite.visible = false
     self.energy_percentage = 1
