@@ -32,7 +32,7 @@ class GameLayer < CCLayer
     create_bullets
 
     @enemies = []
-    create_enemy Point.new(100, 100)
+    #create_enemies
 
     self.isTouchEnabled = true
     schedule 'update'
@@ -90,6 +90,7 @@ class GameLayer < CCLayer
   end
 
   def player_collides?
+    return false if @player.phased_out?
     any_collisions = false
     @enemies.each do |enemy| 
       any_collisions = true if CGRectIntersectsRect(@player.sprite.boundingBox, enemy.sprite.boundingBox)
@@ -122,8 +123,13 @@ class GameLayer < CCLayer
     @enemies.each { |enemy| fire_bullet @enemy_bullets, enemy.position }
   end
 
-  def create_enemy point
-    enemy = Enemy.new
+  def create_enemies
+    create_enemy Point.new(0, 400), Path.new(Array.new(300, [1, -1]))
+    create_enemy Point.new(300, 400), Path.new(Array.new(300, [-1, -1]))
+  end
+
+  def create_enemy point, path
+    enemy = Enemy.new path
     enemy.move_to point
     @bullets_batch.addChild enemy.sprite
     @enemies << enemy

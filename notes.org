@@ -2,12 +2,12 @@
 ** Enemy
 *** DONE can move
 *** DONE can crash into player
-*** TODO [#A] can be destroyed by player
+*** DONE [#A] can be destroyed by player
 **** particle effects
 *** DONE can shoot bullets
 *** DONE loaded by an atlas texture
 *** TODO [#A] can move along a path
-*** TODO [#A] bullets can destroy player
+*** DONE [#A] bullets can destroy player
 
 ** General
 *** can restart

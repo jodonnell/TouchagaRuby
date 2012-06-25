@@ -18,4 +18,8 @@ class Sprite
   def remove
     @sprite.removeFromParentAndCleanup(true)
   end
+
+  def dead?
+    @dead
+  end
 end

@@ -27,6 +27,10 @@ class SpecHelper
     game_layer.touch_began pos
   end
 
+  def self.release_touch
+    game_layer.touch_ended
+  end
+
   def self.drag_to pos
     while pos != player.sprite.position
       position = player.sprite.position

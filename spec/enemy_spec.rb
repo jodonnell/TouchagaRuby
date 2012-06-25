@@ -1,16 +1,25 @@
 describe Enemy do
   before do
-    @enemy = Enemy.new
+    @enemy = Enemy.new Path.new([[1, 1], [2, 2]])
+    @enemy.move_to Point.new(100, 100)
   end
 
   it "can move" do
-    @enemy.move_to Point.new(100, 100)
     @enemy.position.should == Point.new(100, 100)
   end
 
-  it "can move on its own" do
-    @enemy.move_to Point.new(100, 100)
+  it "can follow its path" do
     @enemy.move
-    @enemy.position.should.not == Point.new(100, 100)
+    @enemy.position.should == Point.new(101, 101)
+
+    @enemy.move
+    @enemy.position.should == Point.new(103, 103)
+  end
+
+  it "is marked dead if path over" do
+    @enemy.move
+    @enemy.move
+    @enemy.move
+    @enemy.dead?.should == true
   end
 end
