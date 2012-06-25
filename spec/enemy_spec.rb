@@ -19,7 +19,6 @@ describe Enemy do
   it "is marked dead if path over" do
     @enemy.move
     @enemy.move
-    @enemy.move
     @enemy.dead?.should == true
   end
 end

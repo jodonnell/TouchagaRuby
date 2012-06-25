@@ -23,8 +23,24 @@ describe GameLayer do
   end
 
   it "can collide with enemies" do
-    @game_layer.create_enemy @game_layer.player.position, Path.new([1, 1])
+    @game_layer.create_enemy @game_layer.player.position, Path.new([[1, 1]])
     @game_layer.player_collides?.should == true
+  end
+
+  it "can destroy an enemy with a bullet" do
+    @game_layer.move_player Point.new(100, 100)
+    @game_layer.fire_bullet @game_layer.bullets, @game_layer.player.position
+    @game_layer.create_enemy Point.new(100,110), Path.new([[1, 1]])
+    @game_layer.move_bullets @game_layer.bullets
+    @game_layer.check_for_enemies_destroyed
+    @game_layer.enemies.size.should == 0
+  end
+
+  it "can remove offscreen enemies" do
+    @game_layer.create_enemy Point.new(0,0), Path.new([[1, 1]])
+    @game_layer.move_enemies
+    @game_layer.remove_offscreen_enemies
+    @game_layer.enemies.size.should == 0
   end
 
   def active_bullets

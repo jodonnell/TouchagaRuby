@@ -57,21 +57,25 @@ class GameLayer < CCLayer
       @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
     else
-      fire_bullet @bullets, @player.position if @frame_tick % 3 == 0
+      fire_bullet @bullets, @player.position if @frame_tick % 4 == 0
     end
+
+    #create_enemies if @frame_tick % 120 == 0
 
     move_bullets @bullets
     remove_offscreen_bullets @bullets
 
     move_enemies
 
-    enemies_shoot if @frame_tick % 3 == 0
+    enemies_shoot if @frame_tick % 8 == 0
     move_bullets @enemy_bullets
     remove_offscreen_bullets @enemy_bullets
 
     @player.dead = true if player_collides?
 
-    @enemies = [] if check_for_enemies_destroyed
+    check_for_enemies_destroyed
+
+    remove_offscreen_enemies
 
     CCDirector.sharedDirector.pause if @player.dead?
     
@@ -79,14 +83,20 @@ class GameLayer < CCLayer
     @frame_tick = 0 if @frame_tick == 1000
   end
 
+  def remove_offscreen_enemies
+    @enemies.select! { |enemy| !enemy.dead? }
+  end
+
   def check_for_enemies_destroyed
     return false if @enemies.size == 0
-    any_collisions = false
     @bullets.each do |bullet| 
       next if bullet.visible? == false
-      any_collisions = true if CGRectIntersectsRect(@enemies.first.sprite.boundingBox, bullet.sprite.boundingBox)
+      @enemies.select! do |enemy|
+        collides = CGRectIntersectsRect(enemy.sprite.boundingBox, bullet.sprite.boundingBox)
+        @bullets_batch.removeChild enemy.sprite, cleanup: true if collides
+        !collides
+      end
     end
-    any_collisions
   end
 
   def player_collides?
@@ -124,8 +134,8 @@ class GameLayer < CCLayer
   end
 
   def create_enemies
-    create_enemy Point.new(0, 400), Path.new(Array.new(300, [1, -1]))
-    create_enemy Point.new(300, 400), Path.new(Array.new(300, [-1, -1]))
+    create_enemy Point.new(0, 400), Path.new(Array.new(340, [1, -1]))
+    create_enemy Point.new(300, 400), Path.new(Array.new(340, [-1, -1]))
   end
 
   def create_enemy point, path

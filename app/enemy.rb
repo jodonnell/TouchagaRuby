@@ -9,14 +9,8 @@ class Enemy < Sprite
   end
 
   def move
-    return path_over if @path.path_over?
-
     vector = @path.next_vector
     self.position = Point.new(position.x + vector[0], position.y + vector[1])
-  end
-
-  private
-  def path_over
-    @dead = true
+    @dead = true if @path.path_over?
   end
 end
