@@ -81,7 +81,10 @@ class GameLayer < CCLayer
     move_bullets @enemy_bullets
     remove_offscreen_bullets @enemy_bullets
 
-    @player.dead = true if player_collides?
+    if player_collides?
+      create_explosion_particle @player.position
+      @player.dead = true
+    end
 
     check_for_enemies_destroyed
 
@@ -113,12 +116,12 @@ class GameLayer < CCLayer
   def destroy_enemy enemy
     remove_enemy enemy
     @warp_out.add_energy 0.06
-    create_explosion_particle enemy.position.cg
+    create_explosion_particle enemy.position
   end
 
-  def create_explosion_particle cg_point
+  def create_explosion_particle point
     particle = CCParticleExplosion.node
-    particle.position = cg_point
+    particle.position = point.cg
     particle.totalParticles = 250
     particle.life = 0.623
     particle.lifeVar = 0.379
@@ -131,7 +134,7 @@ class GameLayer < CCLayer
   end
 
   def player_collides?
-    return false if @player.phased_out?
+    return false if @player.phased_out? || @player.dead?
     any_collisions = false
     @enemies.each do |enemy| 
       any_collisions = true if CGRectIntersectsRect(@player.sprite.boundingBox, enemy.sprite.boundingBox)

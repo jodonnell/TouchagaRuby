@@ -34,6 +34,7 @@ describe GameLayer do
   end
 
   it "can collide with enemies" do
+    @game_layer.player.dead = false
     @game_layer.create_enemy @game_layer.player.position, Path.new([[1, 1]])
     @game_layer.player_collides?.should == true
   end
