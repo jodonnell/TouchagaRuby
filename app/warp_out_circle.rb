@@ -42,8 +42,13 @@ class WarpOutCircle < Sprite
   end
 
   def energy_percentage
-      @energy
+    @energy
   end
 
+  def add_energy energy
+    new = energy_percentage + energy
+    new = 1 if new > 1
+    self.energy_percentage = new
+  end
 
 end

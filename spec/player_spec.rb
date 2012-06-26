@@ -19,4 +19,11 @@ describe Player do
     @player.phased_out?.should == false
     @player.visible?.should == true
   end
+
+  it "can create a new life" do
+    @player.dead = true
+    @player.phase_out
+    @player.dead = false
+    @player.phased_out?.should == false
+  end
 end

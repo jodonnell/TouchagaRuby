@@ -34,6 +34,7 @@ class GameLayer < CCLayer
 
 
     @player = Player.new
+    @player.dead = true
     @bullets_batch.addChild @player.sprite
 
     @warp_out = WarpOutCircle.new @player.position
@@ -65,7 +66,7 @@ class GameLayer < CCLayer
     if @player.phased_out?
       @warp_out.energy_percentage -= 0.001
       @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
-    else
+    elsif !@player.dead?
       fire_bullet @bullets, @player.position if @frame_tick % 4 == 0
     end
 
@@ -86,8 +87,6 @@ class GameLayer < CCLayer
 
     remove_offscreen_enemies
 
-    CCDirector.sharedDirector.pause if @player.dead?
-    
     @frame_tick += 1
     @frame_tick = 0 if @frame_tick == 1000000
   end
@@ -113,6 +112,7 @@ class GameLayer < CCLayer
 
   def destroy_enemy enemy
     remove_enemy enemy
+    @warp_out.add_energy 0.06
     create_explosion_particle enemy.position.cg
   end
 
@@ -201,24 +201,26 @@ class GameLayer < CCLayer
   end
 
   def touch_began position
-    if @player.phased_out?
-      phase_in = @warp_out.in_phase_in_area?(position)
-      if phase_in
-        @warp_out.phase_in
-        @player.phase_in
-        move_player position
-      end
-      phase_in
-    else
-      CGRectContainsPoint(@player.sprite.boundingBox, position.cg)
+    if @player.phased_out? && @warp_out.in_phase_in_area?(position)
+      @warp_out.phase_in
+      @player.phase_in
+      move_player position
+      return true
+    elsif @player.dead?
+      @player.dead = false
+      touch_moved position
+      return true
     end
+    false
   end
 
   def touch_moved position
+    return if @player.dead?
     move_player position
   end
 
   def touch_ended
+    return if @player.dead?
     players_pos = @player.position
     @warp_out.position = players_pos
     @player.phase_out
@@ -227,5 +229,9 @@ class GameLayer < CCLayer
 
   def move_player position
     @player.position = position
+  end
+
+  def active_bullets
+    @bullets.select { |bullet| bullet.visible? }
   end
 end

@@ -15,6 +15,10 @@ class Sprite
     @sprite.visible
   end
 
+  def visible= visible
+    @sprite.visible = visible
+  end
+
   def remove
     @sprite.removeFromParentAndCleanup(true)
   end
@@ -22,4 +26,9 @@ class Sprite
   def dead?
     @dead
   end
+
+  def dead= dead
+    @dead = dead
+  end
+
 end

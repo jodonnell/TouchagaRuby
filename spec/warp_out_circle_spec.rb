@@ -13,6 +13,18 @@ describe WarpOutCircle do
     @warp_out.visible?.should == false
   end
 
+  it "can give energy" do
+    @warp_out.energy_percentage = 0.5
+    @warp_out.add_energy 0.25
+    @warp_out.energy_percentage.should == 0.75
+  end
+
+  it "can give energy" do
+    @warp_out.energy_percentage = 0.5
+    @warp_out.add_energy 0.51
+    @warp_out.energy_percentage.should == 1.0
+  end
+
   it "can tell if a point is within the phase in area" do
     @warp_out.in_phase_in_area?(Point.new(249, 125)).should == true
     @warp_out.in_phase_in_area?(Point.new(250, 125)).should == false

@@ -11,8 +11,19 @@ describe GameLayer do
     @game_layer.warp_out.energy_percentage.should == 0
   end
 
+  it "does not shoot if dead" do
+    @game_layer.player.dead = true
+    @game_layer.update
+    @game_layer.active_bullets.size.should == 0
+  end
+
+  it "can phase in anywhere if player dead" do
+    @game_layer.touch_began Point.new(1, 1)
+    @game_layer.player.position.should == Point.new(1, 1)
+  end
+
   it "destroys bullets when they go off screen" do
-    @game_layer.player.phase_in
+    @game_layer.player.dead = false
     @game_layer.update
     @game_layer.player.phase_out
     active_bullets.size.should == 1
@@ -34,6 +45,17 @@ describe GameLayer do
     @game_layer.move_bullets @game_layer.bullets
     @game_layer.check_for_enemies_destroyed
     @game_layer.enemies.size.should == 0
+  end
+
+  it "can give back energy when destroying an enemy" do
+    @game_layer.warp_out.energy_percentage = 0.5
+    @game_layer.move_player Point.new(100, 100)
+    @game_layer.fire_bullet @game_layer.bullets, @game_layer.player.position
+    @game_layer.create_enemy Point.new(100,110), Path.new([[1, 1]])
+    @game_layer.move_bullets @game_layer.bullets
+    @game_layer.check_for_enemies_destroyed
+
+    @game_layer.warp_out.energy_percentage.should > 0.5
   end
 
   it "can remove offscreen enemies" do
