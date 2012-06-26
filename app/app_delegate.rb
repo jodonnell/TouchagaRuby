@@ -5,7 +5,6 @@ class AppDelegate
     glView = CCGLView.viewWithFrame @window.bounds,
       pixelFormat: KEAGLColorFormatRGB565,
       depthFormat: 0,
-      preserveBackbuffer: false,
       sharegroup: nil,
       multiSampling: false,
       numberOfSamples: 0

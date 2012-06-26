@@ -32,66 +32,88 @@ class GameLayer < CCLayer
     @bullets_batch = CCSpriteBatchNode.batchNodeWithFile("sprites.png")
     addChild(@bullets_batch)
 
+    @bullets = 1000.times.collect do 
+      bullet = CCSprite.spriteWithSpriteFrameName("bullet.png")
+      bullet.setPosition(CGPoint.new(rand(320), rand(400)))
+      @bullets_batch.addChild bullet
+      move_action = CCMoveTo.actionWithDuration( rand(4), position:CGPoint.new(bullet.position.x, 550))
+      bullet.runAction move_action
+      bullet
+    end
 
-    @player = Player.new
-    @player.dead = true
-    @bullets_batch.addChild @player.sprite
+    # @player = Player.new
+    # @player.dead = true
+    # @bullets_batch.addChild @player.sprite
 
-    @warp_out = WarpOutCircle.new @player.position
-    @bullets_batch.addChild @warp_out.sprite
+    # @warp_out = WarpOutCircle.new @player.position
+    # @bullets_batch.addChild @warp_out.sprite
 
-    create_bullets
+#    create_bullets
 
-    @enemies = []
+    # @enemies = []
 
-    self.isTouchEnabled = true
+    #self.isTouchEnabled = true
     schedule 'update'
   end
 
   def create_bullets
-    @bullets = 100.times.collect do 
+    @bullets = 250.times.collect do 
       bullet = Bullet.new
       @bullets_batch.addChild bullet.sprite
+
       bullet
     end
 
-    @enemy_bullets = 100.times.collect do 
-      bullet = EnemyBullet.new
-      @bullets_batch.addChild bullet.sprite
-      bullet
-    end
+    # @enemy_bullets = 100.times.collect do 
+    #   bullet = EnemyBullet.new
+    #   @bullets_batch.addChild bullet.sprite
+    #   bullet
+    # end
   end
 
   def update
-    if @player.phased_out?
-      @warp_out.energy_percentage -= 0.001
-      @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
-    elsif !@player.dead?
-      fire_bullet @bullets, @player.position if @frame_tick % 4 == 0
-    end
+    # if @player.phased_out?
+    #   @warp_out.energy_percentage -= 0.001
+    #   @warp_out.energy_percentage = 0 if @warp_out.energy_percentage < 0
+    # elsif !@player.dead?
+    #   fire_bullet @bullets, @player.position if @frame_tick % 4 == 0
+    # end
 
-    @level.update @frame_tick
+    # @level.update @frame_tick
 
-    move_bullets @bullets
-    remove_offscreen_bullets @bullets
+    #move_bullets @bullets
+    @bullets.each {|bullet|
+      if bullet.position.y > 500
+        bullet.setPosition(CGPoint.new(bullet.position.x, 0))
+	bullet.stopAllActions
+        move_action = CCMoveTo.actionWithDuration( rand(4), position:CGPoint.new(bullet.position.x, 550))
+        bullet.runAction move_action
+        
+      else
+        # bullet.setPosition(CGPoint.new(bullet.position.x, bullet.position.y + 10))
+      end
+    }
 
-    move_enemies
 
-    enemies_shoot if @frame_tick % 8 == 0
-    move_bullets @enemy_bullets
-    remove_offscreen_bullets @enemy_bullets
+    # remove_offscreen_bullets @bullets
 
-    if player_collides?
-      create_explosion_particle @player.position
-      @player.dead = true
-    end
+    # move_enemies
 
-    check_for_enemies_destroyed
+    # enemies_shoot if @frame_tick % 8 == 0
+    # move_bullets @enemy_bullets
+    # remove_offscreen_bullets @enemy_bullets
 
-    remove_offscreen_enemies
+    # if player_collides?
+    #   create_explosion_particle @player.position
+    #   @player.dead = true
+    # end
+
+    # check_for_enemies_destroyed
+
+    # remove_offscreen_enemies
 
     @frame_tick += 1
-    @frame_tick = 0 if @frame_tick == 1000000
+    # @frame_tick = 0 if @frame_tick == 1000000
   end
 
   def remove_offscreen_enemies
