@@ -93,7 +93,10 @@ class GameLayer < CCLayer
   end
 
   def remove_offscreen_enemies
-    @enemies.select! { |enemy| !enemy.dead? }
+    @enemies.select! do |enemy| 
+      remove_enemy(enemy) if enemy.dead?
+      !enemy.dead?
+    end
   end
 
   def check_for_enemies_destroyed
@@ -102,10 +105,29 @@ class GameLayer < CCLayer
       next if bullet.visible? == false
       @enemies.select! do |enemy|
         collides = CGRectIntersectsRect(enemy.sprite.boundingBox, bullet.sprite.boundingBox)
-        @bullets_batch.removeChild enemy.sprite, cleanup: true if collides
+        destroy_enemy(enemy) if collides
         !collides
       end
     end
+  end
+
+  def destroy_enemy enemy
+    remove_enemy enemy
+    create_explosion_particle enemy.position.cg
+  end
+
+  def create_explosion_particle cg_point
+    particle = CCParticleExplosion.node
+    particle.position = cg_point
+    particle.totalParticles = 250
+    particle.life = 0.623
+    particle.lifeVar = 0.379
+    addChild particle
+
+  end
+
+  def remove_enemy enemy
+    @bullets_batch.removeChild enemy.sprite, cleanup: true
   end
 
   def player_collides?
