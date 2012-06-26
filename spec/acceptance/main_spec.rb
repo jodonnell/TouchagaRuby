@@ -1,6 +1,6 @@
 describe "Application 'Touchaga'" do
   before do
-    CCDirector.sharedDirector.replaceScene GameLayer.scene
+    CCDirector.sharedDirector.replaceScene GameLayer.scene_with_test_level
     CCDirector.sharedDirector.drawScene
   end
 

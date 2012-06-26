@@ -1,6 +1,8 @@
 class GameLayer < CCLayer 
   attr_accessor :player
   attr_accessor :warp_out
+  attr_accessor :level
+
   attr_reader :bullets
   attr_reader :enemies
   attr_reader :enemy_bullets
@@ -10,6 +12,14 @@ class GameLayer < CCLayer
     layer = GameLayer.node
 
     scene.addChild layer, z:1, tag: 1
+    scene
+  end
+
+  def self.scene_with_test_level
+    scene = GameLayer.scene
+    layer = scene.getChildByTag(1)
+    level = TestLevel.new layer
+    layer.level = level
     scene
   end
 
@@ -32,7 +42,6 @@ class GameLayer < CCLayer
     create_bullets
 
     @enemies = []
-    #create_enemies
 
     self.isTouchEnabled = true
     schedule 'update'
@@ -60,7 +69,7 @@ class GameLayer < CCLayer
       fire_bullet @bullets, @player.position if @frame_tick % 4 == 0
     end
 
-    #create_enemies if @frame_tick % 120 == 0
+    @level.update @frame_tick
 
     move_bullets @bullets
     remove_offscreen_bullets @bullets
@@ -80,7 +89,7 @@ class GameLayer < CCLayer
     CCDirector.sharedDirector.pause if @player.dead?
     
     @frame_tick += 1
-    @frame_tick = 0 if @frame_tick == 1000
+    @frame_tick = 0 if @frame_tick == 1000000
   end
 
   def remove_offscreen_enemies

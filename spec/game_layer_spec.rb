@@ -1,6 +1,6 @@
 describe GameLayer do
   before do
-    @game_layer = GameLayer.node
+    @game_layer = GameLayer.scene_with_test_level.getChildByTag(1)
     @game_layer.onEnter
   end
 
