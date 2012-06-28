@@ -24,10 +24,10 @@ class GameLayer < CCLayer
     bullets_batch = CCSpriteBatchNode.batchNodeWithFile("sprites.png")
     addChild(bullets_batch, z:1, tag:0)
 
-    @bullets = 250.times.collect do |x|
-      bullet = CCSprite.spriteWithSpriteFrameName("bullet.png")
-      bullet.setPosition(CGPoint.new(rand(320), rand(400)))
-      bullets_batch.addChild bullet, z: 1, tag:x
+    @bullets = 190.times.collect do |x|
+      bullet = Bullet.new
+      bullet.sprite.setPosition(CGPoint.new(rand(320), rand(400)))
+      bullets_batch.addChild bullet.sprite, z: 1, tag:x
       bullet
     end
 
@@ -36,12 +36,11 @@ class GameLayer < CCLayer
 
   def update
     node = getChildByTag 0
-    250.times {|num|
-      bullet = node.getChildByTag num
+    @bullets.each {|bullet|
       if bullet.position.y > 500
-        bullet.setPosition(CGPoint.new(bullet.position.x, 0))
+        bullet.sprite.setPosition(CGPoint.new(bullet.position.x, 0))
       else
-        bullet.setPosition(CGPoint.new(bullet.position.x, bullet.position.y + 10))
+        bullet.sprite.setPosition(CGPoint.new(bullet.position.x, bullet.position.y + 10))
       end
     }
   end

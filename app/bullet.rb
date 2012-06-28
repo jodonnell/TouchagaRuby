@@ -3,8 +3,6 @@ class Bullet < Sprite
 
   def initialize
     @sprite = CCSprite.spriteWithSpriteFrameName "bullet.png"
-
-    self.position = Point.new(rand(300), rand(400))
   end
 
   def move
@@ -13,7 +11,7 @@ class Bullet < Sprite
 
     #self.sprite.position.y = self.sprite.position.y + 10
     #Point.new(position.x, position.y + 10)
-    self.position = Point.new(position.x, position.y + 3)
+    self.position = Point.new(position.x, position.y + 10)
   end
 
   def off_screen?
