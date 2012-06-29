@@ -35,7 +35,6 @@ class GameLayer < CCLayer
   end
 
   def update
-    node = getChildByTag 0
     @bullets.each {|bullet|
       if bullet.position.y > 500
         bullet.sprite.setPosition(CGPoint.new(bullet.position.x, 0))
