@@ -1,14 +1,14 @@
 class Sprite
   def move_to point
-    @sprite.position = point.cg
+    @sprite.position = point
   end
 
   def position
-    Point.new(@sprite.position)
+    @sprite.position
   end
 
   def position= position
-    @sprite.position = position.cg
+    @sprite.position = position
   end
 
   def visible?
